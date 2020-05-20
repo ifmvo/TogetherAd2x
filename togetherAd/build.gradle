@@ -22,11 +22,11 @@ android {
 }
 
 dependencies {
-//    api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    embed(name: 'GDTSDK.unionNormal.4.211.1081', ext: 'aar')
-    embed(name: 'Baidu_MobAds_SDK-release', ext: 'aar')
-    embed(name: 'open_ad_sdk', ext: 'aar')
+//    embed(name: 'GDTSDK.unionNormal.4.211.1081', ext: 'aar')
+//    embed(name: 'Baidu_MobAds_SDK-release', ext: 'aar')
+//    embed(name: 'open_ad_sdk', ext: 'aar')
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
