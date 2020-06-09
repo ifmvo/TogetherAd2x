@@ -1,5 +1,3 @@
-![Logo](doc/img/TogetherAd-Logo.png)
-
 TogetherAd 封装了多种广告的 SDK，可以自行控制请求各种广告次数的比例，可以自定义广告位。
 
 ### 文档收集
@@ -35,7 +33,7 @@ allprojects {
 Module 目录下 build.gradle 中
 ```
 dependencies {
-    implementation 'com.github.ifmvo:TogetherAd:lastVersion'
+    implementation 'com.github.ifmvo:TogetherAd:2.1.3'
 }
 ```
 ### 使用方法
@@ -88,9 +86,6 @@ dependencies {
 ### 特殊处理
 1. 前贴其实就是使用信息流+倒计时进行处理
 2. 广点通和穿山甲的插屏广告也是使用 信息流 + 关闭按钮 的方式伪装出来的
-
-### 有疑问？VX 联系我!
-![WeChat](img/Wechat.jpeg)
 
 ### 更新日志
 v2.0.9
