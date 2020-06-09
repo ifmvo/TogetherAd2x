@@ -33,6 +33,7 @@ class App : Application() {
         gdtIdMap[TogetherAdConst.AD_WEBVIEW_BANNER] = "3050767842595815"
         gdtIdMap[TogetherAdConst.AD_BACK] = "8021700419077347"
         gdtIdMap[TogetherAdConst.AD_MID] = "8021700419077347"
+        gdtIdMap[TogetherAdConst.AD_VERTICAL_VIDEO] = "3051315501066888"
         TogetherAd.initGDTAd(this, "1105965856", gdtIdMap)
 
         val csjIdMap = HashMap<String, String>()
@@ -43,8 +44,8 @@ class App : Application() {
         csjIdMap[TogetherAdConst.AD_WEBVIEW_BANNER] = "920413358"
         csjIdMap[TogetherAdConst.AD_BACK] = "920413512"
         csjIdMap[TogetherAdConst.AD_MID] = "920413056"
+        csjIdMap[TogetherAdConst.AD_VERTICAL_VIDEO] = "945223808"
         TogetherAd.initCsjAd(this, "5020413", this.getString(R.string.app_name), csjIdMap, useTextureView = true)
-
         TogetherAd.setAdTimeOutMillis(5000)
     }
 }

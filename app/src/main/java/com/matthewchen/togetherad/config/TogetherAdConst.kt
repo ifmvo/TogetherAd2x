@@ -26,4 +26,7 @@ object TogetherAdConst {
 
     //mid
     const val AD_MID = "ad_mid"
+
+    //竖屏视频广告
+    const val AD_VERTICAL_VIDEO = "ad_vertical_video"
 }

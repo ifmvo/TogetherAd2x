@@ -12,6 +12,7 @@ import com.rumtel.ad.helper.banner.TogetherAdBanner
 import com.rumtel.ad.helper.inter.TogetherAdInter
 import com.rumtel.ad.helper.mid.TogetherAdMid
 import com.rumtel.ad.helper.preMovie.TogetherAdPreMovie
+import com.rumtel.ad.helper.preMovie.TogetherAdVerticalPreMovie
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
@@ -46,6 +47,34 @@ class DetailActivity : AppCompatActivity() {
         mBtnMid.setOnClickListener {
             midAd()
         }
+
+        mBtnVerticalAd.setOnClickListener {
+            fullVerticalVideo(true)
+        }
+    }
+
+    private fun fullVerticalVideo(needTimer: Boolean) {
+        TogetherAdVerticalPreMovie.showAdVerticalPreMovie(this, Config.preMoiveAdConfig(), TogetherAdConst.AD_TIEPIAN_LIVE, ll_ad_vertical, object : TogetherAdVerticalPreMovie.AdListenerPreMovie {
+            override fun onAdClick(channel: String) {
+                Log.e("ifmvo", "onAdClick:channel:$channel")
+            }
+
+            override fun onAdFailed(failedMsg: String?) {
+                Log.e("ifmvo", "onAdFailed:failedMsg:$failedMsg")
+            }
+
+            override fun onAdDismissed() {
+                Log.e("ifmvo", "onAdDismissed")
+            }
+
+            override fun onAdPrepared(channel: String) {
+                Log.e("ifmvo", "onAdPrepared:channel:$channel")
+            }
+
+            override fun onStartRequest(channel: String) {
+                Log.e("ifmvo", "onStartRequest:channel:$channel")
+            }
+        }, needTimer = needTimer)
     }
 
     private fun preMovieAd(needTimer: Boolean) {

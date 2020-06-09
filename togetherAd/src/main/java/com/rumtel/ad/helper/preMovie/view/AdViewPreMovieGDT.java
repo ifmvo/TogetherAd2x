@@ -202,7 +202,7 @@ public class AdViewPreMovieGDT extends AdViewPreMovieBase {
             }
         };
 
-        NativeUnifiedAD mAdManager = new NativeUnifiedAD(super.getContext(), TogetherAd.INSTANCE.getAppIdGDT(), locationId, listener);
+        NativeUnifiedAD mAdManager = new NativeUnifiedAD(super.getContext(), locationId, listener);
         //有效值就是 5-60
         mAdManager.setMaxVideoDuration(60);
         mAdManager.setMinVideoDuration(5);
