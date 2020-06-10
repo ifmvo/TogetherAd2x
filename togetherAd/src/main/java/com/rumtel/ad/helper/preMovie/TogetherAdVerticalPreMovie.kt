@@ -22,11 +22,11 @@ import java.util.*
  */
 object TogetherAdVerticalPreMovie : AdBase() {
 
-    private var weak: WeakReference<AdViewPreMovieBase>? = null
+    private var weak: WeakReference<AdViewVerticalPreMovieBase>? = null
     private var mChannel: String = ""
 
     fun showAdVerticalPreMovie(@NonNull activity: Activity, configVerticalPreMovie: String?, @NonNull adConstStr: String,
-                               @NonNull adsParentLayout: ViewGroup, @NonNull adListener: AdListenerPreMovie, @NonNull needTimer: Boolean = true) {
+                               @NonNull adsParentLayout: ViewGroup, @NonNull adListener: AdListenerVerticalPreMovie, @NonNull needTimer: Boolean = true) {
         startTimerTask(activity, adsParentLayout, adListener)
         //如果存在，首先销毁上一个广告
         destroy()
@@ -61,7 +61,7 @@ object TogetherAdVerticalPreMovie : AdBase() {
             adsParentLayout.addView(adView)
         }
 
-        adView?.setAdViewPreMovieListener(object : AdViewPreMovieBase.AdViewPreMovieListener {
+        adView?.setAdViewVerticalPreMovieListener(object : AdViewVerticalPreMovieBase.AdViewVerticalPreMovieListener {
             override fun onExposured() {
                 logd("$mChannel: ${activity.getString(R.string.exposure)}")
             }
@@ -136,7 +136,7 @@ object TogetherAdVerticalPreMovie : AdBase() {
      */
     private fun showAdVerticalPreMovieGDT(activity: Activity, @NonNull needTimer: Boolean) {
         mChannel = AdNameType.GDT.type
-        weak = WeakReference(AdViewPreMovieGDT(activity, needTimer))
+        weak = WeakReference(AdViewVerticalPreMovieGDT(activity, needTimer))
     }
 
     /**
@@ -161,7 +161,7 @@ object TogetherAdVerticalPreMovie : AdBase() {
     /**
      * 开始计时任务
      */
-    private fun startTimerTask(activity: Activity, adsParentLayout: ViewGroup, adListener: AdListenerPreMovie) {
+    private fun startTimerTask(activity: Activity, adsParentLayout: ViewGroup, adListener: AdListenerVerticalPreMovie) {
         cancelTimerTask()
         timer = Timer()
         overTimerTask = OverTimerTask(activity, adsParentLayout, adListener)
@@ -171,9 +171,9 @@ object TogetherAdVerticalPreMovie : AdBase() {
     /**
      * 请求超时处理的任务
      */
-    private class OverTimerTask(activity: Activity, adsParentLayout: ViewGroup, adListener: AdListenerPreMovie) : TimerTask() {
+    private class OverTimerTask(activity: Activity, adsParentLayout: ViewGroup, adListener: AdListenerVerticalPreMovie) : TimerTask() {
 
-        private val weakReference: WeakReference<AdListenerPreMovie>?
+        private val weakReference: WeakReference<AdListenerVerticalPreMovie>?
         private val weakRefContext: WeakReference<Activity>?
         private val weakRefView: WeakReference<ViewGroup>?
 
@@ -213,7 +213,7 @@ object TogetherAdVerticalPreMovie : AdBase() {
         lastAdView?.pause()
     }
 
-    interface AdListenerPreMovie {
+    interface AdListenerVerticalPreMovie {
 
         fun onAdClick(channel: String)
 

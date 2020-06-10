@@ -23,7 +23,7 @@ import java.util.ArrayList
  *
  * Created by Matthew_Chen on 2018/8/14.
  */
-class AdViewVerticalPreMovieCsj : AdViewPreMovieBase {
+class AdViewVerticalPreMovieCsj : AdViewVerticalPreMovieBase {
     var activity: Activity? = null
 
     constructor(context: Activity, needTimer: Boolean) : super(context, needTimer) {
@@ -65,6 +65,9 @@ class AdViewVerticalPreMovieCsj : AdViewPreMovieBase {
                         logd("Callback --> onFullScreenVideoAdLoad")
                         if (stop) {
                             return
+                        }
+                        if (adViewListener != null) {
+                            adViewListener.onAdPrepared()
                         }
                         ad.setFullScreenVideoAdInteractionListener(object :
                             TTFullScreenVideoAd.FullScreenVideoAdInteractionListener {

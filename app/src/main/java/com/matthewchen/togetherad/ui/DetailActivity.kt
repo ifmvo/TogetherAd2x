@@ -54,7 +54,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun fullVerticalVideo(needTimer: Boolean) {
-        TogetherAdVerticalPreMovie.showAdVerticalPreMovie(this, Config.preMoiveAdConfig(), TogetherAdConst.AD_TIEPIAN_LIVE, ll_ad_vertical, object : TogetherAdVerticalPreMovie.AdListenerPreMovie {
+        TogetherAdVerticalPreMovie.showAdVerticalPreMovie(this, Config.preMoiveAdConfig(), TogetherAdConst.AD_TIEPIAN_LIVE, ll_ad_vertical, object : TogetherAdVerticalPreMovie.AdListenerVerticalPreMovie {
             override fun onAdClick(channel: String) {
                 Log.e("ifmvo", "onAdClick:channel:$channel")
             }
@@ -178,6 +178,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         TogetherAdPreMovie.pause()
+        TogetherAdVerticalPreMovie.pause()
         TogetherAdInter.pause()
         TogetherAdMid.pause()
     }
@@ -185,6 +186,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         TogetherAdPreMovie.resume()
+        TogetherAdVerticalPreMovie.resume()
         TogetherAdInter.resume()
         TogetherAdMid.resume()
     }
@@ -192,6 +194,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         TogetherAdPreMovie.destroy()
+        TogetherAdVerticalPreMovie.destroy()
         TogetherAdInter.destroy()
         TogetherAdMid.destroy()
     }
