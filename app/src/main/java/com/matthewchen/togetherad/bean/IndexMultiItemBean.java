@@ -18,10 +18,6 @@ public class IndexMultiItemBean implements MultiItemEntity {
      */
     public static final int TYPE_AD_GDT = 2;
 
-    /**
-     * 广告 BAIDU Mob
-     */
-    public static final int TYPE_AD_BAIDU = 3;
 
     /**
      * 广告 穿山甲

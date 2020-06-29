@@ -1,7 +1,6 @@
 package com.rumtel.ad.helper.inter
 
 import android.app.Activity
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.annotation.NonNull
 import android.util.DisplayMetrics
@@ -10,9 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.baidu.mobads.AdSize
-import com.baidu.mobads.InterstitialAd
-import com.baidu.mobads.InterstitialAdListener
 import com.bytedance.sdk.openadsdk.*
 import com.ifmvo.imageloader.ILFactory
 import com.ifmvo.imageloader.LoadListener
@@ -45,9 +41,6 @@ object TogetherAdInter : AdBase() {
         stop = false
 
         when (AdRandomUtil.getRandomAdName(interConfigStr)) {
-            AdNameType.BAIDU -> {
-                showAdInterBaiduMob(activity, interConfigStr, adConstStr, isLandscape, adIntersContainer, adListener)
-            }
             AdNameType.GDT -> {
                 showAdInterTecentGDT(activity, interConfigStr, adConstStr, isLandscape, adIntersContainer, adListener)
             }
@@ -190,67 +183,6 @@ object TogetherAdInter : AdBase() {
         mAdManager.setVideoPlayPolicy(VideoOption.VideoPlayPolicy.AUTO) // 本次拉回的视频广告，在用户看来是否为自动播放的
         mAdManager.setVideoADContainerRender(VideoOption.VideoADContainerRender.SDK) // 视频播放前，用户看到的广告容器是由SDK渲染的
         mAdManager.loadData(1)
-    }
-
-    private fun showAdInterBaiduMob(@NonNull activity: Activity, interConfigStr: String?, @NonNull adConstStr: String, @NonNull isLandscape: Boolean, @NonNull adIntersContainer: RelativeLayout, @NonNull adListener: AdListenerInter) {
-
-        adListener.onStartRequest(AdNameType.BAIDU.type)
-
-        val interAd = InterstitialAd(activity, AdSize.InterstitialForVideoPausePlay, TogetherAd.idMapBaidu[adConstStr])
-
-        interAd.setListener(object : InterstitialAdListener {
-            override fun onAdReady() {
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.show)}")
-                adIntersContainer.visibility = View.VISIBLE
-                if (adIntersContainer.childCount > 0) {
-                    adIntersContainer.removeAllViews()
-                }
-                adIntersContainer.setBackgroundColor(Color.parseColor("#60000000"))
-                interAd.showAdInParentForVideoApp(activity, adIntersContainer)
-            }
-
-            override fun onAdPresent() {
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.prepared)}")
-                adIntersContainer.setOnClickListener {
-                    adIntersContainer.removeAllViews()
-                    adIntersContainer.setBackgroundColor(Color.parseColor("#00000000"))
-                    adIntersContainer.visibility = View.GONE
-                }
-                adListener.onAdPrepared(AdNameType.BAIDU.type)
-            }
-
-            override fun onAdClick(interstitialAd: InterstitialAd) {
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.clicked)}")
-                adListener.onAdClick(AdNameType.BAIDU.type)
-            }
-
-            override fun onAdDismissed() {
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.dismiss)}")
-                adIntersContainer.removeAllViews()
-                adIntersContainer.setBackgroundColor(Color.parseColor("#00000000"))
-                adIntersContainer.visibility = View.GONE
-                adListener.onAdDismissed()
-            }
-
-            override fun onAdFailed(s: String) {
-                loge("${AdNameType.BAIDU.type}: $s")
-                adIntersContainer.removeAllViews()
-                adIntersContainer.setBackgroundColor(Color.parseColor("#00000000"))
-                adIntersContainer.visibility = View.GONE
-                val newConfigStr = interConfigStr?.replace(AdNameType.BAIDU.type, AdNameType.NO.type)
-                showAdInter(activity, newConfigStr, adConstStr, isLandscape, adIntersContainer, adListener)
-            }
-        })
-        val dm = DisplayMetrics()
-        activity.windowManager.defaultDisplay.getMetrics(dm)
-
-        val n = ((if (dm.widthPixels > dm.heightPixels) dm.heightPixels else dm.widthPixels) * 0.8).toInt()
-        interAd.loadAdForVideoApp(n, (n * 0.8).toInt())
-
-        adIntersContainer.postDelayed({
-            interAd.loadAdForVideoApp(n, (n * 0.8).toInt())
-        }, 1000)
-
     }
 
     private fun showAdInterCsj(@NonNull activity: Activity, interConfigStr: String?, @NonNull adConstStr: String, @NonNull isLandscape: Boolean, @NonNull adIntersContainer: RelativeLayout, @NonNull adListener: AdListenerInter) {

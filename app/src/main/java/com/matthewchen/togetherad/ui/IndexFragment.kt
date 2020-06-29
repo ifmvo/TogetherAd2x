@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.*
-import com.baidu.mobad.feeds.NativeResponse
 import com.bytedance.sdk.openadsdk.TTAdConstant
 import com.bytedance.sdk.openadsdk.TTFeedAd
 import com.bytedance.sdk.openadsdk.TTNativeAd
@@ -139,7 +138,7 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
      * 广告的曝光处理
      */
     fun exposure(position: Int) {
-        if (position < 0 || position > mAdapter.itemCount - 1) {
+        /*if (position < 0 || position > mAdapter.itemCount - 1) {
             return
         }
         val item = mAdapter.getItem(position)
@@ -149,7 +148,7 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
                     ad.recordImpression(recyclerView)
                 }
             }
-        }
+        }*/
     }
 
     /**
@@ -235,35 +234,6 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
                     })
                     adObject.startVideo()
                 }
-            }
-        }
-    }
-
-    /**
-     * 处理百度 mob 广告的数据
-     */
-    private fun convertBaiduAd(helper: BaseViewHolder, item: IndexMultiItemBean) {
-        val mImgPoster = helper.getView<ImageView>(R.id.img_poster)
-        val mLlSuper = helper.getView<LinearLayout>(R.id.ll_super)
-        val mTvTitle = helper.getView<TextView>(R.id.tv_title)
-        val mAdLogoView = helper.getView<AdLogoView>(R.id.ad_logo_view)
-
-
-        val layoutParams = mImgPoster?.layoutParams
-        layoutParams?.height = itemIvH
-
-        val adObject = item.adObject
-
-        if (adObject is NativeResponse) {
-
-            mAdLogoView.setAdLogoType(AdNameType.BAIDU, adObject)
-            Log.d("ifmvo", adObject.baiduLogoUrl)
-            Log.d("ifmvo", adObject.adLogoUrl)
-
-            mTvTitle?.text = adObject.title
-            ILFactory.getLoader().load(mContext, mImgPoster, adObject.imageUrl, LoaderOptions())
-            mLlSuper?.setOnClickListener {
-                adObject.handleClick(it)
             }
         }
     }
@@ -383,7 +353,6 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
             init {
                 addItemType(IndexMultiItemBean.TYPE_CONTENT, R.layout.list_item_index_hot)
                 addItemType(IndexMultiItemBean.TYPE_AD_GDT, R.layout.list_item_index_hot_ad_gdt)
-                addItemType(IndexMultiItemBean.TYPE_AD_BAIDU, R.layout.list_item_index_hot_ad_baidu)
                 addItemType(IndexMultiItemBean.TYPE_AD_CSJ, R.layout.list_item_index_hot_ad_csj)
             }
 
@@ -396,10 +365,6 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
                     //广告 GDT
                     IndexMultiItemBean.TYPE_AD_GDT -> {
                         convertGDTAd(helper, item)
-                    }
-                    //广告 Baidu Mob
-                    IndexMultiItemBean.TYPE_AD_BAIDU -> {
-                        convertBaiduAd(helper, item)
                     }
                     //广告穿山甲
                     IndexMultiItemBean.TYPE_AD_CSJ -> {
@@ -459,9 +424,6 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
                 when (val any = adList[lastUseAdPosition]) {
                     is NativeUnifiedADData -> {
                         multiItemList.add(IndexMultiItemBean(IndexMultiItemBean.TYPE_AD_GDT, any))
-                    }
-                    is NativeResponse -> {
-                        multiItemList.add(IndexMultiItemBean(IndexMultiItemBean.TYPE_AD_BAIDU, any))
                     }
                     is TTFeedAd -> {
                         multiItemList.add(IndexMultiItemBean(IndexMultiItemBean.TYPE_AD_CSJ, any))

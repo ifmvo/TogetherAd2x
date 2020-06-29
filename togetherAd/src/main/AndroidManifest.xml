@@ -18,22 +18,6 @@
     <application>
 
         <!--
-            百度
-        -->
-        <activity android:name="com.baidu.mobads.AppActivity"
-                  android:configChanges="keyboard|keyboardHidden|orientation"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-        <provider android:name="com.baidu.mobads.openad.FileProvider"
-                  android:authorities="${applicationId}.bd.provider"
-                  android:exported="false"
-                  android:grantUriPermissions="true">
-            <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/bd_file_paths"/>
-        </provider>
-
-        <!--
             腾讯 广点通
         -->
         <service

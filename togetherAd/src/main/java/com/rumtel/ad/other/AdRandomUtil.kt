@@ -35,7 +35,6 @@ object AdRandomUtil {
             if (keyStr.isEmpty() || valueStr.isEmpty()) break
             //加到 list 里面 2 个 "baidu"
             when (keyStr) {
-                AdNameType.BAIDU.type -> repeat(valueStr.toIntOrNull() ?: 0) { list.add(AdNameType.BAIDU) }
                 AdNameType.GDT.type -> repeat(valueStr.toIntOrNull() ?: 0) { list.add(AdNameType.GDT) }
                 AdNameType.CSJ.type -> repeat(valueStr.toIntOrNull() ?: 0) { list.add(AdNameType.CSJ) }
                 else -> { /* 如果后台人员拼写字符串出错，忽略即可 */ }

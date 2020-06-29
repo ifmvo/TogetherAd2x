@@ -6,8 +6,8 @@ package com.rumtel.ad.other/*
 enum class AdNameType(val type : String) {
 
     //百度 Mob
-    BAIDU("baidu"),
-
+//    BAIDU("baidu"),
+    
     //腾讯的广点通
     GDT("gdt"),
 

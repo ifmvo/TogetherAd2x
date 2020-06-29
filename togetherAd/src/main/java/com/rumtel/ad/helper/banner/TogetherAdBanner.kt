@@ -1,25 +1,14 @@
 package com.rumtel.ad.helper.banner
 
 import android.app.Activity
-import android.graphics.drawable.Drawable
 import android.support.annotation.NonNull
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
-import com.baidu.mobad.feeds.BaiduNative
-import com.baidu.mobad.feeds.NativeErrorCode
-import com.baidu.mobad.feeds.NativeResponse
-import com.baidu.mobad.feeds.RequestParameters
 import com.bytedance.sdk.openadsdk.*
-import com.ifmvo.imageloader.ILFactory
-import com.ifmvo.imageloader.LoadListener
-import com.ifmvo.imageloader.progress.LoaderOptions
 import com.qq.e.ads.banner2.UnifiedBannerADListener
 import com.qq.e.ads.banner2.UnifiedBannerView
 import com.qq.e.comm.util.AdError
-import com.rumtel.ad.AdLogoView
 import com.rumtel.ad.R
 import com.rumtel.ad.TogetherAd
 import com.rumtel.ad.helper.AdBase
@@ -39,7 +28,6 @@ object TogetherAdBanner : AdBase() {
     fun requestBanner(@NonNull activity: Activity, listConfigStr: String?, @NonNull adConstStr: String, @NonNull adContainer: FrameLayout, @NonNull adListener: AdListenerList) {
 
         when (AdRandomUtil.getRandomAdName(listConfigStr)) {
-            AdNameType.BAIDU -> requestBannerBaidu(activity, listConfigStr, adConstStr, adContainer, adListener)
             AdNameType.GDT -> requestBannerGDT(activity, listConfigStr, adConstStr, adContainer, adListener)
             AdNameType.CSJ -> requestBannerCsj(activity, listConfigStr, adConstStr, adContainer, adListener)
             else -> {
@@ -49,90 +37,6 @@ object TogetherAdBanner : AdBase() {
                 loge(activity.getString(R.string.all_ad_error))
             }
         }
-    }
-
-    private fun requestBannerBaidu(@NonNull activity: Activity, listConfigStr: String?, @NonNull adConstStr: String, @NonNull adContainer: FrameLayout, @NonNull adListener: AdListenerList) {
-        adListener.onStartRequest(AdNameType.BAIDU.type)
-        val baidu = BaiduNative(activity, TogetherAd.idMapBaidu[adConstStr], object : BaiduNative.BaiduNativeNetworkListener {
-
-            override fun onNativeLoad(list: List<NativeResponse>?) {
-
-                if (list.isNullOrEmpty()) {
-                    loge("${AdNameType.BAIDU.type}: 返回的广告是空的")
-                    val newListConfig = listConfigStr?.replace(AdNameType.BAIDU.type, AdNameType.NO.type)
-                    requestBanner(activity, newListConfig, adConstStr, adContainer, adListener)
-                    return
-                }
-
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.prepared)}")
-                adListener.onAdPrepared(AdNameType.BAIDU.type)
-
-                //获取一个广告
-                val adItem = list[0]
-
-                val superView = View.inflate(activity, R.layout.layout_banner_view, null)
-                val ivImage = superView.findViewById<ImageView>(R.id.iv_img)
-                val ivClose = superView.findViewById<ImageView>(R.id.iv_close)
-                val adLogoView = superView.findViewById<AdLogoView>(R.id.ad_logo_view)
-                val tvTitle = superView.findViewById<TextView>(R.id.tv_title)
-                val tvDesc = superView.findViewById<TextView>(R.id.tv_desc)
-
-                tvTitle.text = adItem.title
-                tvDesc.text = adItem.desc
-                adLogoView.setAdLogoType(AdNameType.BAIDU, adItem)
-
-                adContainer.visibility = View.VISIBLE
-                if (adContainer.childCount > 0) {
-                    adContainer.removeAllViews()
-                }
-
-                val dm = DisplayMetrics()
-                activity.windowManager.defaultDisplay.getMetrics(dm)
-                val w = dm.widthPixels / 4
-                val h = w * 9 / 16
-                val layoutParams = adContainer.layoutParams
-                layoutParams.height = h
-
-                val ivLayoutParams = ivImage.layoutParams
-                ivLayoutParams.width = w
-
-                ILFactory.getLoader().load(activity, ivImage, adItem.iconUrl, LoaderOptions(), object : LoadListener() {
-                    override fun onLoadCompleted(p0: Drawable?): Boolean {
-                        return true
-                    }
-                })
-                adContainer.addView(superView)
-                adItem.recordImpression(superView)
-                superView.setOnClickListener {
-                    adItem.handleClick(it)
-                    logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.clicked)}")
-                    adListener.onAdClick(AdNameType.BAIDU.type)
-                }
-
-                ivClose.setOnClickListener {
-                    logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.dismiss)}")
-                    adContainer.removeAllViews()
-                    adContainer.visibility = View.GONE
-                    adListener.onAdDismissed()
-                }
-
-            }
-
-            override fun onNativeFail(nativeErrorCode: NativeErrorCode) {
-
-                val newListConfig = listConfigStr?.replace(AdNameType.BAIDU.type, AdNameType.NO.type)
-                requestBanner(activity, newListConfig, adConstStr, adContainer, adListener)
-                loge("${AdNameType.BAIDU.type}: nativeErrorCode: $nativeErrorCode")
-            }
-        })
-        /*
-         * Step 2. 创建requestParameters对象，并将其传给baidu.makeRequest来请求广告
-         */
-        // 用户点击下载类广告时，是否弹出提示框让用户选择下载与否
-        val requestParameters = RequestParameters.Builder()
-                .build()
-
-        baidu.makeRequest(requestParameters)
     }
 
     private fun requestBannerCsj(@NonNull activity: Activity, listConfigStr: String?, @NonNull adConstStr: String, @NonNull adContainer: FrameLayout, @NonNull adListener: AdListenerList) {

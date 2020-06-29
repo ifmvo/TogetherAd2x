@@ -2,7 +2,6 @@ package com.rumtel.ad
 
 import android.app.Application
 import android.support.annotation.NonNull
-import com.baidu.mobads.AdView
 import com.bytedance.sdk.openadsdk.TTAdConfig
 import com.bytedance.sdk.openadsdk.TTAdConstant
 import com.bytedance.sdk.openadsdk.TTAdSdk
@@ -48,17 +47,6 @@ object TogetherAd {
      */
     var preMoivePaddingSize = 0
         private set
-
-    /**
-     * 初始化广告
-     */
-    //baidu
-    fun initBaiduAd(@NonNull context: Application, @NonNull baiduAdAppId: String, baiduIdMap: MutableMap<String, String>) {
-        mContext = context
-        AdView.setAppSid(context, baiduAdAppId)
-        idMapBaidu = baiduIdMap
-        logd("初始化${AdNameType.BAIDU.type}")
-    }
 
     //广点通
     fun initGDTAd(@NonNull context: Application, @NonNull gdtAdAppId: String, @NonNull gdtIdMap: MutableMap<String, String>) {

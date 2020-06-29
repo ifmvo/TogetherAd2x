@@ -3,10 +3,6 @@ package com.rumtel.ad.helper.flow
 import android.app.Activity
 import android.support.annotation.NonNull
 import android.util.DisplayMetrics
-import com.baidu.mobad.feeds.BaiduNative
-import com.baidu.mobad.feeds.NativeErrorCode
-import com.baidu.mobad.feeds.NativeResponse
-import com.baidu.mobad.feeds.RequestParameters
 import com.bytedance.sdk.openadsdk.AdSlot
 import com.bytedance.sdk.openadsdk.TTAdNative
 import com.bytedance.sdk.openadsdk.TTAdSdk
@@ -44,9 +40,6 @@ object TogetherAdFlow : AdBase() {
         startTimerTask(activity, adListener)
 
         when (AdRandomUtil.getRandomAdName(listConfigStr)) {
-            AdNameType.BAIDU -> {
-                getAdListBaiduMob(activity, listConfigStr, adConstStr, adListener)
-            }
             AdNameType.GDT -> {
                 getAdListTecentGDT(activity, listConfigStr, adConstStr, adListener)
             }
@@ -65,42 +58,6 @@ object TogetherAdFlow : AdBase() {
                 loge(activity.getString(R.string.all_ad_error))
             }
         }
-    }
-
-    private fun getAdListBaiduMob(@NonNull activity: Activity, listConfigStr: String?, @NonNull adConstStr: String, @NonNull adListener: AdListenerList) {
-        adListener.onStartRequest(AdNameType.BAIDU.type)
-        val baidu = BaiduNative(activity, TogetherAd.idMapBaidu[adConstStr], object : BaiduNative.BaiduNativeNetworkListener {
-
-            override fun onNativeLoad(list: List<NativeResponse>) {
-                if (stop) {
-                    return
-                }
-                cancelTimerTask()
-
-                activity.runOnUiThread {
-                    adListener.onAdLoaded(AdNameType.BAIDU.type, list)
-                }
-                logd("${AdNameType.BAIDU.type}: list.size: " + list.size)
-            }
-
-            override fun onNativeFail(nativeErrorCode: NativeErrorCode) {
-                if (stop) {
-                    return
-                }
-                cancelTimerTask()
-
-                val newListConfig = listConfigStr?.replace(AdNameType.BAIDU.type, AdNameType.NO.type)
-                getAdList(activity, newListConfig, adConstStr, adListener)
-                loge("${AdNameType.BAIDU.type}: nativeErrorCode: $nativeErrorCode")
-            }
-        })
-        /*
-         * Step 2. 创建requestParameters对象，并将其传给baidu.makeRequest来请求广告
-         */
-        // 用户点击下载类广告时，是否弹出提示框让用户选择下载与否
-        val requestParameters = RequestParameters.Builder().build()
-
-        baidu.makeRequest(requestParameters)
     }
 
     private fun getAdListCsj(@NonNull activity: Activity, listConfigStr: String?, @NonNull adConstStr: String, @NonNull adListener: AdListenerList) {

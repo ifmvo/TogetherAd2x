@@ -16,9 +16,6 @@ import kotlinx.android.synthetic.main.activity_splash.*
  * Created by Matthew_Chen on 2018/12/21.
  */
 class SplashActivity : AppCompatActivity() {
-
-//    private var isPermission = false
-
     private var canJumpImmediately = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

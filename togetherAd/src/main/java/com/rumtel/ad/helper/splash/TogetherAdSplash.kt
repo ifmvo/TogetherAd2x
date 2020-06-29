@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.TextView
-import com.baidu.mobads.SplashAd
-import com.baidu.mobads.SplashAdListener
 import com.bytedance.sdk.openadsdk.AdSlot
 import com.bytedance.sdk.openadsdk.TTAdNative
 import com.bytedance.sdk.openadsdk.TTAdSdk
@@ -53,9 +51,6 @@ object TogetherAdSplash : AdBase() {
         startTimerTask(adListener)
 
         when (AdRandomUtil.getRandomAdName(splashConfigStr)) {
-            AdNameType.BAIDU -> {
-                showAdFullBaiduMob(activity, splashConfigStr, adConstStr, adsParentLayout, skipView, timeView, adListener)
-            }
             AdNameType.GDT -> {
                 showAdFullGDT(activity, splashConfigStr, adConstStr, adsParentLayout, skipView, timeView, adListener)
             }
@@ -132,46 +127,6 @@ object TogetherAdSplash : AdBase() {
         }, 0)
 
         splash.fetchAndShowIn(adsParentLayout)
-    }
-
-    /**
-     * 百度Mob
-     */
-    private fun showAdFullBaiduMob(@NonNull activity: Activity, splashConfigStr: String?, @NonNull adConstStr: String, @NonNull adsParentLayout: ViewGroup, skipView: View?, timeView: TextView?, @NonNull adListener: AdListenerSplashFull) {
-        adListener.onStartRequest(AdNameType.BAIDU.type)
-
-        SplashAd(activity, adsParentLayout, object : SplashAdListener {
-            override fun onAdPresent() {
-                if (stop) {
-                    return
-                }
-                cancelTimerTask()
-
-                adListener.onAdPrepared(AdNameType.BAIDU.type)
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.prepared)}")
-            }
-
-            override fun onAdDismissed() {
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.dismiss)}")
-                adListener.onAdDismissed()
-            }
-
-            override fun onAdFailed(s: String) {
-                if (stop) {
-                    return
-                }
-                cancelTimerTask()
-                loge("${AdNameType.BAIDU.type}: $s")
-                val newConfigPreMovie = splashConfigStr?.replace(AdNameType.BAIDU.type, AdNameType.NO.type)
-                showAdFull(activity, newConfigPreMovie, adConstStr, adsParentLayout, skipView, timeView, adListener)
-            }
-
-            override fun onAdClick() {
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.clicked)}")
-                adListener.onAdClick(AdNameType.BAIDU.type)
-            }
-
-        }, TogetherAd.idMapBaidu[adConstStr], true)
     }
 
     /**

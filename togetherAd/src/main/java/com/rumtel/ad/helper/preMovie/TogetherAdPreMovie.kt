@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.rumtel.ad.R
 import com.rumtel.ad.TogetherAd
 import com.rumtel.ad.helper.AdBase
-import com.rumtel.ad.helper.preMovie.view.AdViewPreMovieBaidu
 import com.rumtel.ad.helper.preMovie.view.AdViewPreMovieBase
 import com.rumtel.ad.helper.preMovie.view.AdViewPreMovieCsj
 import com.rumtel.ad.helper.preMovie.view.AdViewPreMovieGDT
@@ -39,9 +38,6 @@ object TogetherAdPreMovie : AdBase() {
         }
 
         when (AdRandomUtil.getRandomAdName(configPreMovie)) {
-            AdNameType.BAIDU -> {
-                showAdPreMovieBaiduMob(activity, needTimer)
-            }
             AdNameType.GDT -> {
                 showAdPreMovieGDT(activity, needTimer)
             }
@@ -81,9 +77,6 @@ object TogetherAdPreMovie : AdBase() {
 
                 var newConfigPreMovie: String? = null
                 when (mChannel) {
-                    AdNameType.BAIDU.type -> {
-                        newConfigPreMovie = configPreMovie?.replace(AdNameType.BAIDU.type, AdNameType.NO.type)
-                    }
                     AdNameType.GDT.type -> {
                         newConfigPreMovie = configPreMovie?.replace(AdNameType.GDT.type, AdNameType.NO.type)
                     }
@@ -128,9 +121,6 @@ object TogetherAdPreMovie : AdBase() {
             AdNameType.GDT.type -> {
                 TogetherAd.idMapGDT[adConstStr]
             }
-            AdNameType.BAIDU.type -> {
-                TogetherAd.idMapBaidu[adConstStr]
-            }
             AdNameType.CSJ.type -> {
                 TogetherAd.idMapCsj[adConstStr]
             }
@@ -139,15 +129,6 @@ object TogetherAdPreMovie : AdBase() {
                 ""
             }
         }
-    }
-
-
-    /**
-     * 百度 Mob
-     */
-    private fun showAdPreMovieBaiduMob(activity: Activity, @NonNull needTimer: Boolean) {
-        mChannel = AdNameType.BAIDU.type
-        weak = WeakReference(AdViewPreMovieBaidu(activity, needTimer))
     }
 
     /**

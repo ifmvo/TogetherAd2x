@@ -15,16 +15,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val baiduIdMap = HashMap<String, String>()
-        baiduIdMap[TogetherAdConst.AD_SPLASH] = "6697024"
-        baiduIdMap[TogetherAdConst.AD_INTER] = "6697054"
-        baiduIdMap[TogetherAdConst.AD_FLOW_INDEX] = "6697101"
-        baiduIdMap[TogetherAdConst.AD_TIEPIAN_LIVE] = "6697116"
-        baiduIdMap[TogetherAdConst.AD_WEBVIEW_BANNER] = "6697141"
-        baiduIdMap[TogetherAdConst.AD_BACK] = "6697152"
-        baiduIdMap[TogetherAdConst.AD_MID] = "6697152"
-        TogetherAd.initBaiduAd(this, "c4d4e71f", baiduIdMap)
-
         val gdtIdMap = HashMap<String, String>()
         gdtIdMap[TogetherAdConst.AD_SPLASH] = "5070550501041614"
         gdtIdMap[TogetherAdConst.AD_INTER] = "4061006419774284"

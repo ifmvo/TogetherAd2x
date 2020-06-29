@@ -8,10 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.baidu.mobad.feeds.BaiduNative
-import com.baidu.mobad.feeds.NativeErrorCode
-import com.baidu.mobad.feeds.NativeResponse
-import com.baidu.mobad.feeds.RequestParameters
 import com.bytedance.sdk.openadsdk.*
 import com.ifmvo.imageloader.ILFactory
 import com.ifmvo.imageloader.progress.LoaderOptions
@@ -43,9 +39,6 @@ object TogetherAdMid : AdBase() {
         stop = false
 
         when (AdRandomUtil.getRandomAdName(midConfigStr)) {
-            AdNameType.BAIDU -> {
-                showAdMidBaiduMob(activity, midConfigStr, adConstStr, adContainer, adListener)
-            }
             AdNameType.GDT -> {
                 showAdMidTecentGDT(activity, midConfigStr, adConstStr, adContainer, adListener)
             }
@@ -169,65 +162,6 @@ object TogetherAdMid : AdBase() {
         mAdManager.setVideoPlayPolicy(VideoOption.VideoPlayPolicy.AUTO) // 本次拉回的视频广告，在用户看来是否为自动播放的
         mAdManager.setVideoADContainerRender(VideoOption.VideoADContainerRender.SDK) // 视频播放前，用户看到的广告容器是由SDK渲染的
         mAdManager.loadData(1)
-    }
-
-    private fun showAdMidBaiduMob(@NonNull activity: Activity, midConfigStr: String?, @NonNull adConstStr: String, @NonNull adContainer: ViewGroup, @NonNull adListener: AdListenerMid) {
-
-        adListener.onStartRequest(AdNameType.BAIDU.type)
-        val baidu = BaiduNative(activity, TogetherAd.idMapBaidu[adConstStr], object : BaiduNative.BaiduNativeNetworkListener {
-
-            override fun onNativeLoad(list: List<NativeResponse>?) {
-
-                if (list.isNullOrEmpty()) {
-                    loge("${AdNameType.BAIDU.type}: 返回的广告是空的")
-                    val newListConfig = midConfigStr?.replace(AdNameType.BAIDU.type, AdNameType.NO.type)
-                    showAdMid(activity, newListConfig, adConstStr, adContainer, adListener)
-                    return
-                }
-
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.prepared)}")
-                adListener.onAdPrepared(AdNameType.BAIDU.type)
-
-                //获取一个广告
-                val adItem = list[0]
-
-                val rootView = View.inflate(activity, R.layout.view_ad_mid_baidu, null)
-                val ivImg = rootView.findViewById<ImageView>(R.id.iv_img)
-                val adLogoView = rootView.findViewById<AdLogoView>(R.id.ad_logo_view)
-                val tvTitle = rootView.findViewById<TextView>(R.id.tv_title)
-                val tvDesc = rootView.findViewById<TextView>(R.id.tv_desc)
-
-                tvTitle.text = adItem.title
-                tvDesc.text = adItem.desc
-                adLogoView.setAdLogoType(AdNameType.BAIDU, adItem)
-
-                adContainer.visibility = View.VISIBLE
-                if (adContainer.childCount > 0) {
-                    adContainer.removeAllViews()
-                }
-                ILFactory.getLoader().load(activity, ivImg, adItem.imageUrl, LoaderOptions())
-                adContainer.addView(rootView)
-                adItem.recordImpression(rootView)
-                logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.exposure)}")
-                rootView.setOnClickListener {
-                    adItem.handleClick(it)
-                    logd("${AdNameType.BAIDU.type}: ${activity.getString(R.string.clicked)}")
-                    adListener.onAdClick(AdNameType.BAIDU.type)
-                }
-            }
-
-            override fun onNativeFail(nativeErrorCode: NativeErrorCode) {
-                val newListConfig = midConfigStr?.replace(AdNameType.BAIDU.type, AdNameType.NO.type)
-                showAdMid(activity, newListConfig, adConstStr, adContainer, adListener)
-                loge("${AdNameType.BAIDU.type}: nativeErrorCode: $nativeErrorCode")
-            }
-        })
-        /*
-         * Step 2. 创建requestParameters对象，并将其传给baidu.makeRequest来请求广告
-         */
-        // 用户点击下载类广告时，是否弹出提示框让用户选择下载与否
-        val requestParameters = RequestParameters.Builder().build()
-        baidu.makeRequest(requestParameters)
     }
 
     private fun showAdMidCsj(@NonNull activity: Activity, midConfigStr: String?, @NonNull adConstStr: String, @NonNull adContainer: ViewGroup, @NonNull adListener: AdListenerMid) {

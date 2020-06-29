@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
-import com.baidu.mobad.feeds.NativeResponse
-import com.ifmvo.imageloader.ILFactory
 import com.rumtel.ad.other.AdNameType
 
 /* 
@@ -51,14 +49,6 @@ class AdLogoView(context: Context, attrs: AttributeSet) : FrameLayout(context, a
         setAdLogoVisibility(adNameType)
 
         when (adNameType) {
-            AdNameType.BAIDU -> {
-                if (adObject == null) {
-                    return
-                }
-                adObject as NativeResponse
-                ILFactory.getLoader().load(context, mIvLogoBaidu, adObject.baiduLogoUrl)
-                ILFactory.getLoader().load(context, mIvAdBaidu, adObject.adLogoUrl)
-            }
             AdNameType.CSJ -> {
                 mIvLogoCsj?.setImageResource(R.drawable.ic_ad_logo_csj)
             }
@@ -74,10 +64,6 @@ class AdLogoView(context: Context, attrs: AttributeSet) : FrameLayout(context, a
      */
     private fun setAdLogoVisibility(adNameType: AdNameType) {
         when (adNameType) {
-            AdNameType.BAIDU -> {
-                mContainerLogoBaidu?.visibility = View.VISIBLE
-                mContainerLogoCsj?.visibility = View.GONE
-            }
             AdNameType.CSJ -> {
                 mContainerLogoBaidu?.visibility = View.GONE
                 mContainerLogoCsj?.visibility = View.VISIBLE
