@@ -27,7 +27,8 @@ object TogetherAdPreMovie : AdBase() {
     private var weak: WeakReference<AdViewPreMovieBase>? = null
     private var mChannel: String = ""
 
-    fun showAdPreMovie(@NonNull activity: Activity, configPreMovie: String?, @NonNull adConstStr: String, @NonNull adsParentLayout: ViewGroup, @NonNull adListener: AdListenerPreMovie, @NonNull needTimer: Boolean = true) {
+    fun showAdPreMovie(@NonNull activity: Activity, configPreMovie: String?, @NonNull adConstStr: String, @NonNull adsParentLayout: ViewGroup,
+                       @NonNull adListener: AdListenerPreMovie, @NonNull needTimer: Boolean = true) {
         startTimerTask(activity, adsParentLayout, adListener)
         //如果存在，首先销毁上一个广告
         destroy()
@@ -53,15 +54,11 @@ object TogetherAdPreMovie : AdBase() {
                 return
             }
         }
-
         adListener.onStartRequest(mChannel)
-
         val adView = weak?.get()
-
         if (adView != null) {
             adsParentLayout.addView(adView)
         }
-
         adView?.setAdViewPreMovieListener(object : AdViewPreMovieBase.AdViewPreMovieListener {
             override fun onExposured() {
                 logd("$mChannel: ${activity.getString(R.string.exposure)}")
@@ -87,7 +84,6 @@ object TogetherAdPreMovie : AdBase() {
                         adListener.onAdFailed(failedMsg)
                     }
                 }
-
                 activity.runOnUiThread {
                     showAdPreMovie(activity, newConfigPreMovie, adConstStr, adsParentLayout, adListener, needTimer)
                 }
@@ -102,7 +98,6 @@ object TogetherAdPreMovie : AdBase() {
                  * 并且下次再请求广告也会先销毁上一个广告
                  * 所以不用担心内存泄漏
                  */
-//                destroy()
                 adsParentLayout.removeAllViews()
                 logd("$mChannel: ${activity.getString(R.string.dismiss)}")
             }

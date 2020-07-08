@@ -8,8 +8,7 @@ import com.rumtel.ad.R
 import com.rumtel.ad.TogetherAd
 import com.rumtel.ad.helper.AdBase
 import com.rumtel.ad.helper.preMovie.view.*
-import com.rumtel.ad.other.AdNameType
-import com.rumtel.ad.other.AdRandomUtil
+import com.rumtel.ad.other.*
 import com.rumtel.ad.other.logd
 import com.rumtel.ad.other.loge
 import java.lang.ref.WeakReference
@@ -26,19 +25,18 @@ object TogetherAdVerticalPreMovie : AdBase() {
     private var mChannel: String = ""
 
     fun showAdVerticalPreMovie(@NonNull activity: Activity, configVerticalPreMovie: String?, @NonNull adConstStr: String,
-                               @NonNull adsParentLayout: ViewGroup, @NonNull adListener: AdListenerVerticalPreMovie, @NonNull needTimer: Boolean = true) {
+                               @NonNull adsParentLayout: ViewGroup, @NonNull adListener: AdListenerVerticalPreMovie, @NonNull needTimer: Boolean = true,
+                               @NonNull present: String) {
         startTimerTask(activity, adsParentLayout, adListener)
         //如果存在，首先销毁上一个广告
         destroy()
-
         adsParentLayout.visibility = View.VISIBLE
         if (adsParentLayout.childCount > 0) {
             adsParentLayout.removeAllViews()
         }
-
         when (AdRandomUtil.getRandomAdName(configVerticalPreMovie)) {
             AdNameType.GDT -> {
-                showAdVerticalPreMovieGDT(activity, needTimer)
+                showAdVerticalPreMovieGDT(activity, needTimer,present)
             }
             AdNameType.CSJ -> {
                 showAdVerticalPreMovieCsj(activity, needTimer)
@@ -52,15 +50,11 @@ object TogetherAdVerticalPreMovie : AdBase() {
                 return
             }
         }
-
         adListener.onStartRequest(mChannel)
-
         val adView = weak?.get()
-
         if (adView != null) {
             adsParentLayout.addView(adView)
         }
-
         adView?.setAdViewVerticalPreMovieListener(object : AdViewVerticalPreMovieBase.AdViewVerticalPreMovieListener {
             override fun onExposured() {
                 logd("$mChannel: ${activity.getString(R.string.exposure)}")
@@ -86,9 +80,8 @@ object TogetherAdVerticalPreMovie : AdBase() {
                         adListener.onAdFailed(failedMsg)
                     }
                 }
-
                 activity.runOnUiThread {
-                    showAdVerticalPreMovie(activity, newConfigPreMovie, adConstStr, adsParentLayout, adListener, needTimer)
+                    showAdVerticalPreMovie(activity, newConfigPreMovie, adConstStr, adsParentLayout, adListener, needTimer,present)
                 }
             }
 
@@ -134,9 +127,16 @@ object TogetherAdVerticalPreMovie : AdBase() {
     /**
      * 腾讯广点通
      */
-    private fun showAdVerticalPreMovieGDT(activity: Activity, @NonNull needTimer: Boolean) {
+    private fun showAdVerticalPreMovieGDT(activity: Activity, @NonNull needTimer: Boolean, @NonNull present: String) {
         mChannel = AdNameType.GDT.type
-        weak = WeakReference(AdViewVerticalPreMovieGDT(activity, needTimer))
+        when (present) {
+            AdPresentType.RewardVideo.present -> {
+                weak = WeakReference(AdViewRewardVideoGDT(activity,needTimer))
+            }
+            AdPresentType.NativeVideo.present -> {
+                weak = WeakReference(AdViewVerticalPreMovieGDT(activity, needTimer))
+            }
+        }
     }
 
     /**

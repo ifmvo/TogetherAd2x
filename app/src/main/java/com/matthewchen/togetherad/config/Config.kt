@@ -11,7 +11,7 @@ object Config {
 
     fun interAdConfig() = "baidu:0,gdt:1,csj:0"
 
-    fun preMoiveAdConfig() = "baidu:0,gdt:1,csj:0"
+    fun preMoiveAdConfig() = "baidu:0,gdt:0,csj:1"
 
     fun listAdConfig() = "baidu:0,gdt:1,csj:0"
 

@@ -55,14 +55,12 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
             } else {
                 wm.getDefaultDisplay().getSize(point);
             }
-
             AdSlot adSlot = new AdSlot.Builder()
                     .setCodeId(locationId)
                     .setSupportDeepLink(true)
                     .setImageAcceptedSize(point.x, point.y)
                     .setAdCount(1)
                     .build();
-
             TTAdSdk.getAdManager().createAdNative(getContext()).loadFeedAd(adSlot, new TTAdNative.FeedAdListener() {
                 @Override
                 public void onError(int i, String s) {
@@ -74,11 +72,9 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
 
                 @Override
                 public void onFeedAdLoad(List<TTFeedAd> list) {
-
                     if (stop) {
                         return;
                     }
-
                     if (list == null || list.size() == 0) {
                         if (adViewListener != null) {
                             AdExtKt.logd(AdViewPreMovieCsj.this, "请求成功但是数量为空");
@@ -86,7 +82,6 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                         }
                         return;
                     }
-
                     TTFeedAd adObject = list.get(0);
 
                     // 可以被点击的view, 也可以把convertView放进来意味整个item可被点击，点击会跳转到落地页
@@ -100,6 +95,7 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                     adObject.registerViewForInteraction(mRootView, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
                         @Override
                         public void onAdClicked(View view, TTNativeAd ttNativeAd) {
+                            AdExtKt.logd(AdViewPreMovieCsj.this, AdNameType.CSJ.getType() + ":前贴：点击了");
                         }
 
                         @Override
@@ -125,7 +121,6 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                     switch (adObject.getImageMode()) {
                         case TTAdConstant.IMAGE_MODE_VIDEO:
                         case TTAdConstant.IMAGE_MODE_VIDEO_VERTICAL:
-//                            if (needTimer) {
                             isVideoAd = true;
                             adObject.setVideoAdListener(new TTFeedAd.VideoAdListener() {
 
@@ -147,6 +142,9 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
 
                                 @Override
                                 public void onVideoError(int i, int i1) {
+                                    if (adViewListener != null) {
+                                        adViewListener.onAdFailed(AdNameType.CSJ.getType() + "：onVideoError：" + i + ", " + i1);
+                                    }
                                     AdExtKt.loge(AdViewPreMovieCsj.this, AdNameType.CSJ.getType() + "：onVideoError：" + i + ", " + i1);
                                 }
 
@@ -171,16 +169,6 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                                 mFlAdContainer.removeAllViews();
                                 mFlAdContainer.addView(adView);
                             }
-//                            } else {
-//                                mLlAdContainer.setVisibility(View.VISIBLE);
-//                                mFlAdContainer.setVisibility(View.GONE);
-//                                mIvImg1.setVisibility(View.GONE);
-//                                mIvImg2.setVisibility(View.GONE);
-//                                TTImage videoCoverImage = adObject.getVideoCoverImage();
-//                                if (videoCoverImage != null && videoCoverImage.getImageUrl() != null) {
-//                                    ILFactory.getLoader().load(AdViewPreMovieCsj.super.getContext(), mIvImg0, videoCoverImage.getImageUrl());
-//                                }
-//                            }
                             break;
 
                         case TTAdConstant.IMAGE_MODE_LARGE_IMG:
@@ -193,6 +181,7 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                                     ILFactory.getLoader().load(AdViewPreMovieCsj.super.getContext(), mIvImg0, imageList.get(0).getImageUrl());
                                 } catch (Exception e) {
                                     //忽略即可
+                                    e.printStackTrace();
                                 }
                             }
                             break;
@@ -209,6 +198,7 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                                     ILFactory.getLoader().load(AdViewPreMovieCsj.super.getContext(), mIvImg0, imageList.get(0).getImageUrl());
                                 } catch (Exception e) {
                                     //忽略即可
+                                    e.printStackTrace();
                                 }
                             }
                             if (imageList != null && imageList.size() > 1 && imageList.get(1) != null && imageList.get(1).isValid()) {
@@ -217,6 +207,7 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                                     ILFactory.getLoader().load(AdViewPreMovieCsj.super.getContext(), mIvImg1, imageList.get(1).getImageUrl());
                                 } catch (Exception e) {
                                     //忽略即可
+                                    e.printStackTrace();
                                 }
                             }
                             if (imageList != null && imageList.size() > 2 && imageList.get(2) != null && imageList.get(2).isValid()) {
@@ -225,13 +216,12 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                                     ILFactory.getLoader().load(AdViewPreMovieCsj.super.getContext(), mIvImg2, imageList.get(2).getImageUrl());
                                 } catch (Exception e) {
                                     //忽略即可
+                                    e.printStackTrace();
                                 }
                             }
                             break;
                     }
                     mAdLogoView.setAdLogoType(AdNameType.CSJ, adObject);
-//                    mTvLogoCsj.setImageBitmap(adObject.getAdLogo());
-
                     if (adViewListener != null) {
                         adViewListener.onAdPrepared();
                     }
@@ -251,12 +241,10 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override

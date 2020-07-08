@@ -121,6 +121,9 @@ public class AdViewPreMovieGDT extends AdViewPreMovieBase {
 
                     @Override
                     public void onADError(AdError adError) {
+                        if (adViewListener != null) {
+                            adViewListener.onAdFailed(adError.getErrorMsg());
+                        }
                     }
 
                     @Override
@@ -177,6 +180,9 @@ public class AdViewPreMovieGDT extends AdViewPreMovieBase {
 
                         @Override
                         public void onVideoError(AdError adError) {
+                            if (adViewListener != null) {
+                                adViewListener.onAdFailed(adError.getErrorMsg());
+                            }
                             AdExtKt.logd(AdViewPreMovieGDT.this, AdNameType.GDT.getType() + "：onVideoError");
                         }
 
