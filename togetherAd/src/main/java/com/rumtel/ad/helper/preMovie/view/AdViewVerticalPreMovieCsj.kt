@@ -95,16 +95,16 @@ class AdViewVerticalPreMovieCsj : AdViewVerticalPreMovieBase {
 
                             override fun onVideoComplete() {
                                 logd("Callback --> onVideoComplete")
-                                if (needTimer && adViewListener != null) {
+                                /*if (needTimer && adViewListener != null) {
                                     adViewListener.onAdDismissed()
-                                }
+                                }*/
                             }
 
                             override fun onSkippedVideo() {
                                 logd("Callback --> onSkippedVideo")
-                                if (needTimer && adViewListener != null) {
+                                /*if (needTimer && adViewListener != null) {
                                     adViewListener.onAdDismissed()
-                                }
+                                }*/
                             }
                         })
                         ad.showFullScreenVideoAd(activity)
