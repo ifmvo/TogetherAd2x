@@ -5,6 +5,7 @@ import android.support.annotation.NonNull
 import com.bytedance.sdk.openadsdk.TTAdConfig
 import com.bytedance.sdk.openadsdk.TTAdConstant
 import com.bytedance.sdk.openadsdk.TTAdSdk
+import com.qq.e.comm.managers.GDTADManager
 import com.rumtel.ad.other.AdNameType
 import com.rumtel.ad.other.logd
 
@@ -53,6 +54,7 @@ object TogetherAd {
         mContext = context
         idMapGDT = gdtIdMap
         appIdGDT = gdtAdAppId
+        GDTADManager.getInstance().initWith(context, gdtAdAppId)
         logd("初始化${AdNameType.GDT.type}")
     }
 
