@@ -14,7 +14,6 @@ import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.ifmvo.imageloader.ILFactory;
@@ -59,9 +58,10 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                     .setCodeId(locationId)
                     .setSupportDeepLink(true)
                     .setImageAcceptedSize(point.x, point.y)
+                    .setNativeAdType(AdSlot.TYPE_FEED)
                     .setAdCount(1)
                     .build();
-            TTAdSdk.getAdManager().createAdNative(getContext()).loadFeedAd(adSlot, new TTAdNative.FeedAdListener() {
+            TTAdSdk.getAdManager().createAdNative(getContext()).loadNativeAd(adSlot, new TTAdNative.NativeAdListener() {
                 @Override
                 public void onError(int i, String s) {
                     AdExtKt.logd(AdViewPreMovieCsj.this, "errorCode: " + i + "errorMsg: " + s);
@@ -71,7 +71,7 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                 }
 
                 @Override
-                public void onFeedAdLoad(List<TTFeedAd> list) {
+                public void onNativeAdLoad(List<TTNativeAd> list) {
                     if (stop) {
                         return;
                     }
@@ -82,7 +82,7 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                         }
                         return;
                     }
-                    TTFeedAd adObject = list.get(0);
+                    TTNativeAd adObject = list.get(0);
 
                     // 可以被点击的view, 也可以把convertView放进来意味整个item可被点击，点击会跳转到落地页
                     List<View> clickViewList = new ArrayList<>();
@@ -121,56 +121,6 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                     switch (adObject.getImageMode()) {
                         case TTAdConstant.IMAGE_MODE_VIDEO:
                         case TTAdConstant.IMAGE_MODE_VIDEO_VERTICAL:
-                            isVideoAd = true;
-                            adObject.setVideoAdListener(new TTFeedAd.VideoAdListener() {
-
-                                public void onProgressUpdate(long current, long duration) {
-                                }
-
-                                public void onVideoAdComplete(TTFeedAd ad) {
-                                    AdExtKt.logd(AdViewPreMovieCsj.this, AdNameType.CSJ.getType() + "：onVideoAdComplete：" + ad.toString());
-                                    //视频广告的情况下，播放完成之后，自动消失 && 需要倒计时的情况（没有倒计时的情况，不自动消失）
-                                    if (needTimer && adViewListener != null) {
-                                        adViewListener.onAdDismissed();
-                                    }
-                                }
-
-                                @Override
-                                public void onVideoLoad(TTFeedAd ttFeedAd) {
-                                    AdExtKt.logd(AdViewPreMovieCsj.this, AdNameType.CSJ.getType() + "：onVideoLoad：" + ttFeedAd.toString());
-                                }
-
-                                @Override
-                                public void onVideoError(int i, int i1) {
-                                    if (adViewListener != null) {
-                                        adViewListener.onAdFailed(AdNameType.CSJ.getType() + "：onVideoError：" + i + ", " + i1);
-                                    }
-                                    AdExtKt.loge(AdViewPreMovieCsj.this, AdNameType.CSJ.getType() + "：onVideoError：" + i + ", " + i1);
-                                }
-
-                                @Override
-                                public void onVideoAdStartPlay(TTFeedAd ttFeedAd) {
-                                    AdExtKt.logd(AdViewPreMovieCsj.this, AdNameType.CSJ.getType() + "：onVideoAdContinuePlay");
-                                }
-
-                                @Override
-                                public void onVideoAdPaused(TTFeedAd ttFeedAd) {
-                                    AdExtKt.logd(AdViewPreMovieCsj.this, AdNameType.CSJ.getType() + "：onVideoAdContinuePlay");
-                                }
-
-                                @Override
-                                public void onVideoAdContinuePlay(TTFeedAd ttFeedAd) {
-                                    AdExtKt.logd(AdViewPreMovieCsj.this, AdNameType.CSJ.getType() + "：onVideoAdContinuePlay");
-                                }
-                            });
-                            mFlAdContainer.setVisibility(View.VISIBLE);
-                            View adView = adObject.getAdView();
-                            if (adView != null && adView.getParent() == null) {
-                                mFlAdContainer.removeAllViews();
-                                mFlAdContainer.addView(adView);
-                            }
-                            break;
-
                         case TTAdConstant.IMAGE_MODE_LARGE_IMG:
                         case TTAdConstant.IMAGE_MODE_SMALL_IMG:
                         case TTAdConstant.IMAGE_MODE_VERTICAL_IMG:
@@ -230,9 +180,10 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
                         startTimerCount(6000);
                     }
                 }
+
             });
         } catch (Exception e) {
-            AdExtKt.logd(AdViewPreMovieCsj.this, "崩溃异常");
+            AdExtKt.logd(AdViewPreMovieCsj.this, "崩溃异常: " + e.getMessage());
             if (adViewListener != null) {
                 adViewListener.onAdFailed("崩溃异常");
             }

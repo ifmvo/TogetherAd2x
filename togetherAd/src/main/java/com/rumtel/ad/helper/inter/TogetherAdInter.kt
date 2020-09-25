@@ -280,6 +280,7 @@ object TogetherAdInter : AdBase() {
                     }
 
                     override fun onCancel() {}
+                    override fun onRefuse() {}
                 })
                 dislikeView.setOnClickListener {
                     dislikeDialog?.showDislikeDialog()

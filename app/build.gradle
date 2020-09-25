@@ -10,7 +10,7 @@ properties.load(inputStream)
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.rumtel.pandatv"
+        applicationId "com.ifmvo.togetherad.demo.old"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1

@@ -6,7 +6,7 @@ import android.util.DisplayMetrics
 import com.bytedance.sdk.openadsdk.AdSlot
 import com.bytedance.sdk.openadsdk.TTAdNative
 import com.bytedance.sdk.openadsdk.TTAdSdk
-import com.bytedance.sdk.openadsdk.TTFeedAd
+import com.bytedance.sdk.openadsdk.TTNativeAd
 import com.qq.e.ads.cfg.VideoOption
 import com.qq.e.ads.nativ.NativeADUnifiedListener
 import com.qq.e.ads.nativ.NativeUnifiedAD
@@ -32,6 +32,7 @@ object TogetherAdFlow : AdBase() {
 
     private var timer: Timer? = null
     private var overTimerTask: OverTimerTask? = null
+
     @Volatile
     private var stop = false
 
@@ -69,10 +70,12 @@ object TogetherAdFlow : AdBase() {
                 .setCodeId(TogetherAd.idMapCsj[adConstStr])
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(dm.widthPixels, (dm.widthPixels * 9 / 16))
-                .setAdCount(4)
+                .setNativeAdType(AdSlot.TYPE_FEED)
+                .setAdCount(3)
                 .build()
-        TTAdSdk.getAdManager().createAdNative(activity).loadFeedAd(adSlot, object : TTAdNative.FeedAdListener {
-            override fun onFeedAdLoad(adList: MutableList<TTFeedAd>?) {
+        TTAdSdk.getAdManager().createAdNative(activity).loadNativeAd(adSlot, object : TTAdNative.NativeAdListener {
+
+            override fun onNativeAdLoad(adList: MutableList<TTNativeAd>?) {
                 if (stop) {
                     return
                 }

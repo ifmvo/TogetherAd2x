@@ -177,7 +177,7 @@ object TogetherAdMid : AdBase() {
                 .setCodeId(TogetherAd.idMapCsj[adConstStr])
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(n, n * 9 / 16)
-                .setNativeAdType(AdSlot.TYPE_INTERACTION_AD)//请求原生广告时候，请务必调用该方法，设置参数为TYPE_BANNER或TYPE_INTERACTION_AD
+                .setNativeAdType(AdSlot.TYPE_FEED)//请求原生广告时候，请务必调用该方法，设置参数为TYPE_BANNER或TYPE_INTERACTION_AD
                 .build()
         TTAdSdk.getAdManager().createAdNative(activity).loadNativeAd(adSlot, object : TTAdNative.NativeAdListener {
             override fun onError(errorCode: Int, errorMsg: String?) {
@@ -229,6 +229,7 @@ object TogetherAdMid : AdBase() {
                     }
 
                     override fun onCancel() {}
+                    override fun onRefuse() {}
                 })
                 dislikeView.setOnClickListener {
                     dislikeDialog?.showDislikeDialog()

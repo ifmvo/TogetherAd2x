@@ -115,7 +115,7 @@ class AdViewVerticalPreMovieCsj : AdViewVerticalPreMovieBase {
                     }
                 })
         } catch (e: Exception) {
-            logd("崩溃异常")
+            logd("崩溃异常, ${e.message}")
             if (adViewListener != null) {
                 adViewListener.onAdFailed("崩溃异常")
             }

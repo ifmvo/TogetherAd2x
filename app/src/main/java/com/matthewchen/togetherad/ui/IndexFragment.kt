@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.bytedance.sdk.openadsdk.TTAdConstant
-import com.bytedance.sdk.openadsdk.TTFeedAd
 import com.bytedance.sdk.openadsdk.TTNativeAd
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -264,7 +263,7 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
 
         val adObject = item.adObject
 
-        if (adObject is TTFeedAd) {
+        if (adObject is TTNativeAd) {
             Log.d("ifmvo", adObject.icon.imageUrl)
 
             // 可以被点击的view, 也可以把convertView放进来意味整个item可被点击，点击会跳转到落地页
@@ -425,7 +424,7 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
                     is NativeUnifiedADData -> {
                         multiItemList.add(IndexMultiItemBean(IndexMultiItemBean.TYPE_AD_GDT, any))
                     }
-                    is TTFeedAd -> {
+                    is TTNativeAd -> {
                         multiItemList.add(IndexMultiItemBean(IndexMultiItemBean.TYPE_AD_CSJ, any))
                     }
                 }

@@ -16,26 +16,26 @@ class App : Application() {
         super.onCreate()
 
         val gdtIdMap = HashMap<String, String>()
-        gdtIdMap[TogetherAdConst.AD_SPLASH] = "5070550501041614"
-        gdtIdMap[TogetherAdConst.AD_INTER] = "4061006419774284"
-        gdtIdMap[TogetherAdConst.AD_FLOW_INDEX] = "6041707449579237"
-        gdtIdMap[TogetherAdConst.AD_TIEPIAN_LIVE] = "3031506499071361"
-        gdtIdMap[TogetherAdConst.AD_WEBVIEW_BANNER] = "3050767842595815"
-        gdtIdMap[TogetherAdConst.AD_BACK] = "8021700419077347"
-        gdtIdMap[TogetherAdConst.AD_MID] = "8021700419077347"
-        gdtIdMap[TogetherAdConst.AD_VERTICAL_VIDEO] = "3051315501066888"
-        TogetherAd.initGDTAd(this, "1105965856", gdtIdMap)
+        gdtIdMap[TogetherAdConst.AD_SPLASH] = "8863364436303842593"
+        gdtIdMap[TogetherAdConst.AD_INTER] = "6040749702835933"
+        gdtIdMap[TogetherAdConst.AD_FLOW_INDEX] = "6040749702835933"
+        gdtIdMap[TogetherAdConst.AD_TIEPIAN_LIVE] = "6040749702835933"
+        gdtIdMap[TogetherAdConst.AD_WEBVIEW_BANNER] = "4080052898050840"
+        gdtIdMap[TogetherAdConst.AD_BACK] = "6040749702835933"
+        gdtIdMap[TogetherAdConst.AD_MID] = "6040749702835933"
+//        gdtIdMap[TogetherAdConst.AD_VERTICAL_VIDEO] = "3051315501066888"
+        TogetherAd.initGDTAd(this, "1101152570", gdtIdMap)
 
         val csjIdMap = HashMap<String, String>()
-        csjIdMap[TogetherAdConst.AD_SPLASH] = "820413685"
-        csjIdMap[TogetherAdConst.AD_INTER] = "920413056"
-        csjIdMap[TogetherAdConst.AD_FLOW_INDEX] = "920413297"
-        csjIdMap[TogetherAdConst.AD_TIEPIAN_LIVE] = "920413238"
-        csjIdMap[TogetherAdConst.AD_WEBVIEW_BANNER] = "920413358"
-        csjIdMap[TogetherAdConst.AD_BACK] = "920413512"
-        csjIdMap[TogetherAdConst.AD_MID] = "920413056"
-        csjIdMap[TogetherAdConst.AD_VERTICAL_VIDEO] = "945223808"
-        TogetherAd.initCsjAd(this, "5020413", this.getString(R.string.app_name), csjIdMap, useTextureView = true)
+        csjIdMap[TogetherAdConst.AD_SPLASH] = "801121648"
+        csjIdMap[TogetherAdConst.AD_INTER] = "901121435"
+        csjIdMap[TogetherAdConst.AD_FLOW_INDEX] = "901121737"
+        csjIdMap[TogetherAdConst.AD_TIEPIAN_LIVE] = "901121737"
+        csjIdMap[TogetherAdConst.AD_WEBVIEW_BANNER] = "901121987"
+        csjIdMap[TogetherAdConst.AD_BACK] = "901121737"
+        csjIdMap[TogetherAdConst.AD_MID] = "901121737"
+//        csjIdMap[TogetherAdConst.AD_VERTICAL_VIDEO] = "945223808"
+        TogetherAd.initCsjAd(this, "5001121", this.getString(R.string.app_name), csjIdMap, useTextureView = true)
         TogetherAd.setAdTimeOutMillis(5000)
     }
 }

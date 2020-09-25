@@ -112,6 +112,7 @@ object TogetherAdBanner : AdBase() {
                     }
 
                     override fun onCancel() {}
+                    override fun onRefuse() {}
                 })
 
                 mTTAd.render()
