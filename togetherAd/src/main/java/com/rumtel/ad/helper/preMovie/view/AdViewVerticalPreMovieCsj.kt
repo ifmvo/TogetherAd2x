@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -44,10 +45,17 @@ class AdViewVerticalPreMovieCsj : AdViewVerticalPreMovieBase {
 
     override fun start(locationId: String) {
         try {
+            val dm = DisplayMetrics()
+            activity?.windowManager?.defaultDisplay?.getMetrics(dm)
+            //图片以16：9的宽高比展示
+            //无论是横屏还是竖屏都是取小的那个长度的80%
+            val n = ((if (dm.widthPixels > dm.heightPixels) dm.heightPixels else dm.widthPixels) * 0.8).toInt()
+
             var adSlot: AdSlot
             adSlot = AdSlot.Builder()
                 .setCodeId(locationId)
                 .setSupportDeepLink(true)
+                .setExpressViewAcceptedSize(n.toFloat(), n.toFloat())
                 .setOrientation(TTAdConstant.VERTICAL)//必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
                 .build()
             var mTTAdNative: TTAdNative = TTAdSdk.getAdManager().createAdNative(activity)
