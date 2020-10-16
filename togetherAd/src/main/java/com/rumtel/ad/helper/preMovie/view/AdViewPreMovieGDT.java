@@ -17,7 +17,6 @@ import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
 import com.rumtel.ad.R;
-import com.rumtel.ad.TogetherAd;
 import com.rumtel.ad.other.AdExtKt;
 import com.rumtel.ad.other.AdNameType;
 
@@ -86,7 +85,7 @@ public class AdViewPreMovieGDT extends AdViewPreMovieBase {
                 mFlDesc.setVisibility(View.VISIBLE);
                 mTvDesc.setText(mAD.getTitle());
 
-                isVideoAd = mAD.getAdPatternType() == AdPatternType.NATIVE_VIDEO;
+//                isVideoAd = mAD.getAdPatternType() == AdPatternType.NATIVE_VIDEO;
 
                 if (mAD.getAdPatternType() == AdPatternType.NATIVE_2IMAGE_2TEXT || mAD.getAdPatternType() == AdPatternType.NATIVE_3IMAGE) {
                     mLlAdContainer.setVisibility(View.VISIBLE);
