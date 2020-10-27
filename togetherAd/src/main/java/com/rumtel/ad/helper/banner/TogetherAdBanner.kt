@@ -67,6 +67,9 @@ object TogetherAdBanner : AdBase() {
             override fun onNativeExpressAdLoad(ads: MutableList<TTNativeExpressAd>?) {
                 if (ads?.isEmpty() != false) {
                     loge("${AdNameType.CSJ.type}: 返回的广告是空的")
+                    activity.runOnUiThread {
+                        adListener.onAdFailedSingle(AdNameType.CSJ.type, activity.getString(R.string.ad_is_null))
+                    }
                     val newListConfig = listConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                     requestBanner(activity, newListConfig, adConstStr, adContainer, adListener)
                     return
@@ -96,6 +99,9 @@ object TogetherAdBanner : AdBase() {
 
                     override fun onRenderFail(p0: View?, msg: String?, code: Int) {
                         loge("${AdNameType.CSJ.type}: onRenderFail: code:$code, msg: $msg")
+                        activity.runOnUiThread {
+                            adListener.onAdFailedSingle(AdNameType.CSJ.type, "${code}_$msg")
+                        }
                         val newListConfig = listConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                         activity.runOnUiThread {
                             requestBanner(activity, newListConfig, adConstStr, adContainer, adListener)
@@ -120,6 +126,9 @@ object TogetherAdBanner : AdBase() {
 
             override fun onError(errorCode: Int, errorMsg: String?) {
                 loge("${AdNameType.CSJ.type}: errorCode: $errorCode, errorMsg: $errorMsg")
+                activity.runOnUiThread {
+                    adListener.onAdFailedSingle(AdNameType.CSJ.type, "${errorCode}_$errorMsg")
+                }
                 val newListConfig = listConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                 requestBanner(activity, newListConfig, adConstStr, adContainer, adListener)
             }
@@ -130,7 +139,7 @@ object TogetherAdBanner : AdBase() {
     private fun requestBannerGDT(@NonNull activity: Activity, listConfigStr: String?, @NonNull adConstStr: String, @NonNull adContainer: FrameLayout, @NonNull adListener: AdListenerList) {
         bannerView?.destroy()
         adListener.onStartRequest(AdNameType.GDT.type)
-        bannerView = UnifiedBannerView(activity, TogetherAd.appIdGDT, TogetherAd.idMapGDT[adConstStr], object : UnifiedBannerADListener {
+        bannerView = UnifiedBannerView(activity, TogetherAd.idMapGDT[adConstStr], object : UnifiedBannerADListener {
             override fun onADCloseOverlay() {
             }
 
@@ -154,6 +163,9 @@ object TogetherAdBanner : AdBase() {
             override fun onNoAD(adError: AdError?) {
                 bannerView?.destroy()
                 loge("${AdNameType.GDT.type}: ${adError?.errorCode}, ${adError?.errorMsg}")
+                activity.runOnUiThread {
+                    adListener.onAdFailedSingle(AdNameType.GDT.type, "${adError?.errorCode}_${adError?.errorMsg}")
+                }
                 val newListConfig = listConfigStr?.replace(AdNameType.GDT.type, AdNameType.NO.type)
                 requestBanner(activity, newListConfig, adConstStr, adContainer, adListener)
             }
@@ -185,6 +197,8 @@ object TogetherAdBanner : AdBase() {
         fun onAdClick(channel: String)
 
         fun onAdFailed(failedMsg: String?)
+
+        fun onAdFailedSingle(channel: String, failedMsg: String?)
 
         fun onAdDismissed()
 

@@ -396,6 +396,10 @@ class IndexFragment : BaseRecyclerViewFragment<IndexMultiItemBean, BaseViewHolde
                 handleListData(insertAdAction(t, null), currentPage)
             }
 
+            override fun onAdFailedSingle(channel: String, failedMsg: String?) {
+                Log.e("ifmvo", "onAdFailedSingle:channel:$channel failedMsg:$failedMsg")
+            }
+
             override fun onAdLoaded(channel: String, adList: List<*>) {
                 handleListData(insertAdAction(t, adList), currentPage)
             }

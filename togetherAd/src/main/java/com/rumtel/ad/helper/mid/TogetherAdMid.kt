@@ -64,6 +64,9 @@ object TogetherAdMid : AdBase() {
 
                 if (adList?.isEmpty() != false) {
                     loge("${AdNameType.GDT.type}: 广点通信息流伪装MID返回空的")
+                    activity.runOnUiThread {
+                        adListener.onAdFailedSingle(AdNameType.GDT.type, activity.getString(R.string.ad_is_null))
+                    }
                     val newConfigStr = midConfigStr?.replace(AdNameType.GDT.type, AdNameType.NO.type)
                     showAdMid(activity, newConfigStr, adConstStr, adContainer, adListener)
                     return
@@ -150,12 +153,15 @@ object TogetherAdMid : AdBase() {
                 if (stop) {
                     return
                 }
+                activity.runOnUiThread {
+                    adListener.onAdFailedSingle(AdNameType.GDT.type, "${adError?.errorCode}_${adError?.errorMsg}")
+                }
                 val newConfigStr = midConfigStr?.replace(AdNameType.GDT.type, AdNameType.NO.type)
                 showAdMid(activity, newConfigStr, adConstStr, adContainer, adListener)
             }
         }
 
-        val mAdManager = NativeUnifiedAD(activity, TogetherAd.appIdGDT, TogetherAd.idMapGDT[adConstStr], listener)
+        val mAdManager = NativeUnifiedAD(activity, TogetherAd.idMapGDT[adConstStr], listener)
         //有效值就是 5-60
         mAdManager.setMaxVideoDuration(60)
         mAdManager.setMinVideoDuration(5)
@@ -185,6 +191,9 @@ object TogetherAdMid : AdBase() {
                 if (stop) {
                     return
                 }
+                activity.runOnUiThread {
+                    adListener.onAdFailedSingle(AdNameType.CSJ.type, "${errorCode}_$errorMsg")
+                }
                 val newConfigStr = midConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                 showAdMid(activity, newConfigStr, adConstStr, adContainer, adListener)
             }
@@ -195,6 +204,9 @@ object TogetherAdMid : AdBase() {
                 }
                 if (adList.isNullOrEmpty() || adList[0] == null) {
                     loge("${AdNameType.CSJ.type}: 穿山甲返回的广告是 null")
+                    activity.runOnUiThread {
+                        adListener.onAdFailedSingle(AdNameType.CSJ.type, activity.getString(R.string.ad_is_null))
+                    }
                     val newConfigStr = midConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                     showAdMid(activity, newConfigStr, adConstStr, adContainer, adListener)
                     return
@@ -258,6 +270,9 @@ object TogetherAdMid : AdBase() {
                 val imageList = adItem.imageList
                 if (imageList.isNullOrEmpty() || imageList[0] == null) {
                     loge("${AdNameType.CSJ.type}: 广告里面的图片是null")
+                    activity.runOnUiThread {
+                        adListener.onAdFailedSingle(AdNameType.CSJ.type, activity.getString(R.string.ad_img_is_null))
+                    }
                     val newConfigStr = midConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                     showAdMid(activity, newConfigStr, adConstStr, adContainer, adListener)
                     return
@@ -308,6 +323,8 @@ object TogetherAdMid : AdBase() {
         fun onAdClick(channel: String)
 
         fun onAdFailed(failedMsg: String?)
+
+        fun onAdFailedSingle(channel: String, failedMsg: String?)
 
         fun onAdDismissed()
 

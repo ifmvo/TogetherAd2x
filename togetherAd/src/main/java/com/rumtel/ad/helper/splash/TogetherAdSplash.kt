@@ -74,7 +74,7 @@ object TogetherAdSplash : AdBase() {
      */
     private fun showAdFullGDT(@NonNull activity: Activity, splashConfigStr: String?, @NonNull adConstStr: String, @NonNull adsParentLayout: ViewGroup, skipView: View?, timeView: TextView?, @NonNull adListener: AdListenerSplashFull) {
         adListener.onStartRequest(AdNameType.GDT.type)
-        val splash = SplashAD(activity, skipView, TogetherAd.appIdGDT, TogetherAd.idMapGDT[adConstStr], object : SplashADListener {
+        val splash = SplashAD(activity, skipView, TogetherAd.idMapGDT[adConstStr], object : SplashADListener {
             override fun onADDismissed() {
                 adListener.onAdDismissed()
                 logd("${AdNameType.GDT.type}: ${activity.getString(R.string.dismiss)}")
@@ -87,6 +87,9 @@ object TogetherAdSplash : AdBase() {
                     return
                 }
                 cancelTimerTask()
+                activity.runOnUiThread {
+                    adListener.onAdFailedSingle(AdNameType.GDT.type, "${adError.errorCode}_${adError.errorMsg}")
+                }
                 loge("${AdNameType.GDT.type}: ${adError.errorMsg}")
                 val newConfigPreMovie = splashConfigStr?.replace(AdNameType.GDT.type, AdNameType.NO.type)
                 showAdFull(activity, newConfigPreMovie, adConstStr, adsParentLayout, skipView, timeView, adListener)
@@ -163,6 +166,9 @@ object TogetherAdSplash : AdBase() {
 
                     if (splashAd == null) {
                         loge("${AdNameType.CSJ.type}: 广告是 null")
+                        activity.runOnUiThread {
+                            adListener.onAdFailedSingle(AdNameType.CSJ.type, activity.getString(R.string.ad_is_null))
+                        }
                         val newSplashConfigStr = splashConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                         showAdFull(activity, newSplashConfigStr, adConstStr, adsParentLayout, skipView, timeView, adListener)
                         return
@@ -201,7 +207,9 @@ object TogetherAdSplash : AdBase() {
                         return
                     }
                     cancelTimerTask()
-
+                    activity.runOnUiThread {
+                        adListener.onAdFailedSingle(AdNameType.CSJ.type, activity.getString(R.string.timeout))
+                    }
                     loge("${AdNameType.CSJ.type}: ${activity.getString(R.string.timeout)}")
                     val newSplashConfigStr = splashConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                     showAdFull(activity, newSplashConfigStr, adConstStr, adsParentLayout, skipView, timeView, adListener)
@@ -212,7 +220,9 @@ object TogetherAdSplash : AdBase() {
                         return
                     }
                     cancelTimerTask()
-
+                    activity.runOnUiThread {
+                        adListener.onAdFailedSingle(AdNameType.CSJ.type, "${errorCode}_$errorMsg")
+                    }
                     loge("${AdNameType.CSJ.type}: $errorCode : $errorMsg")
                     val newSplashConfigStr = splashConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                     showAdFull(activity, newSplashConfigStr, adConstStr, adsParentLayout, skipView, timeView, adListener)
@@ -225,6 +235,9 @@ object TogetherAdSplash : AdBase() {
             cancelTimerTask()
 
             loge("${AdNameType.CSJ.type}: 线程：${Thread.currentThread().name}, 崩溃异常: $e")
+            activity.runOnUiThread {
+                adListener.onAdFailedSingle(AdNameType.CSJ.type, e.message)
+            }
             val newSplashConfigStr = splashConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
             showAdFull(activity, newSplashConfigStr, adConstStr, adsParentLayout, skipView, timeView, adListener)
         }
@@ -239,6 +252,8 @@ object TogetherAdSplash : AdBase() {
         fun onAdClick(channel: String)
 
         fun onAdFailed(failedMsg: String?)
+
+        fun onAdFailedSingle(channel: String, failedMsg: String?)
 
         fun onAdDismissed()
 

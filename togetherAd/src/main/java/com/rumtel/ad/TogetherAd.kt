@@ -16,11 +16,6 @@ import com.rumtel.ad.other.logd
  */
 object TogetherAd {
 
-    /**
-     * 位ID的Map
-     */
-    var idMapBaidu = mutableMapOf<String, String>()
-        private set
     var idMapGDT = mutableMapOf<String, String>()
         private set
     var idMapCsj = mutableMapOf<String, String>()

@@ -3,6 +3,7 @@ package com.rumtel.ad.helper.preMovie.view;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -47,6 +48,13 @@ public class AdViewVerticalPreMovieGDT extends AdViewVerticalPreMovieBase {
 
     @Override
     public void start(String locationId) {
+
+        if (TextUtils.isEmpty(locationId)) {
+            if (adViewListener != null) {
+                adViewListener.onAdFailed("ID是空的");
+            }
+            return;
+        }
 
         NativeADUnifiedListener listener = new NativeADUnifiedListener() {
             @Override

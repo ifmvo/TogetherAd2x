@@ -68,6 +68,10 @@ object TogetherAdVerticalPreMovie : AdBase() {
             override fun onAdFailed(failedMsg: String) {
                 loge("$mChannel: $failedMsg")
 
+                activity.runOnUiThread {
+                    adListener.onAdFailedSingle(mChannel, failedMsg)
+                }
+
                 var newConfigPreMovie: String? = null
                 when (mChannel) {
                     AdNameType.GDT.type -> {
@@ -218,6 +222,8 @@ object TogetherAdVerticalPreMovie : AdBase() {
         fun onAdClick(channel: String)
 
         fun onAdFailed(failedMsg: String?)
+
+        fun onAdFailedSingle(channel: String, failedMsg: String?)
 
         fun onAdDismissed()
 

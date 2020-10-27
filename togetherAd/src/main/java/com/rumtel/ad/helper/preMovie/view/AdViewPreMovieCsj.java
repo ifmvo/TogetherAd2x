@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
@@ -45,6 +46,13 @@ public class AdViewPreMovieCsj extends AdViewPreMovieBase {
 
     @Override
     public void start(String locationId) {
+
+        if (TextUtils.isEmpty(locationId)) {
+            if (adViewListener != null) {
+                adViewListener.onAdFailed("ID是空的");
+            }
+            return;
+        }
 
         try {
             WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);

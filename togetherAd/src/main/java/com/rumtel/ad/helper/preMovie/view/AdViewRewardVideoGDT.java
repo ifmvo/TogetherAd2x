@@ -4,28 +4,13 @@ import android.content.Context;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.Toast;
 
-import com.ifmvo.imageloader.ILFactory;
-import com.ifmvo.imageloader.progress.LoaderOptions;
-import com.qq.e.ads.cfg.VideoOption;
-import com.qq.e.ads.nativ.NativeADEventListener;
-import com.qq.e.ads.nativ.NativeADMediaListener;
-import com.qq.e.ads.nativ.NativeADUnifiedListener;
-import com.qq.e.ads.nativ.NativeUnifiedAD;
-import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
 import com.qq.e.ads.rewardvideo.RewardVideoADListener;
-import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
-import com.rumtel.ad.R;
 import com.rumtel.ad.other.AdExtKt;
-import com.rumtel.ad.other.AdNameType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /*
@@ -48,11 +33,15 @@ public class AdViewRewardVideoGDT extends AdViewVerticalPreMovieBase {
     }
 
     private RewardVideoAD rewardVideoAD;
-    private boolean adLoaded;//广告加载成功标志
-    private boolean videoCached;//视频素材文件下载完成标志
 
     @Override
     public void start(String locationId) {
+        if (TextUtils.isEmpty(locationId)) {
+            if (adViewListener != null) {
+                adViewListener.onAdFailed("ID是空的");
+            }
+            return;
+        }
         RewardVideoADListener listener = new RewardVideoADListener() {
             @Override
             public void onADLoad() {
@@ -118,8 +107,6 @@ public class AdViewRewardVideoGDT extends AdViewVerticalPreMovieBase {
             }
         };
         rewardVideoAD = new RewardVideoAD(super.getContext(), locationId, listener, true);
-        adLoaded = false;
-        videoCached = false;
         rewardVideoAD.loadAD();
     }
 

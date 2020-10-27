@@ -10,4 +10,7 @@
 
 
     <string name="dislike">不喜欢</string>
+
+    <string name="ad_is_null">请求成功，但返回广告是空的</string>
+    <string name="ad_img_is_null">请求成功，但返回广告的图片是空的</string>
 </resources>

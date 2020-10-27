@@ -81,6 +81,9 @@ object TogetherAdFlow : AdBase() {
                 }
                 if (adList.isNullOrEmpty()) {
                     loge("${AdNameType.CSJ.type}: 返回的广告是空的")
+                    activity.runOnUiThread {
+                        adListener.onAdFailedSingle(AdNameType.CSJ.type, activity.getString(R.string.ad_is_null))
+                    }
                     val newListConfig = listConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                     getAdList(activity, newListConfig, adConstStr, adListener)
                     return
@@ -97,6 +100,10 @@ object TogetherAdFlow : AdBase() {
                     return
                 }
                 cancelTimerTask()
+
+                activity.runOnUiThread {
+                    adListener.onAdFailedSingle(AdNameType.CSJ.type, "${errorCode}_$errorMsg")
+                }
 
                 loge("${AdNameType.CSJ.type}: errorCode: $errorCode, errorMsg: $errorMsg")
                 val newListConfig = listConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
@@ -118,6 +125,9 @@ object TogetherAdFlow : AdBase() {
                 //list是空的，按照错误来处理
                 if (adList?.isEmpty() != false) {
                     loge("${AdNameType.GDT.type}: 请求成功，但是返回的list为空")
+                    activity.runOnUiThread {
+                        adListener.onAdFailedSingle(AdNameType.GDT.type, activity.getString(R.string.ad_is_null))
+                    }
                     val newListConfig = listConfigStr?.replace(AdNameType.GDT.type, AdNameType.NO.type)
                     activity.runOnUiThread {
                         getAdList(activity, newListConfig, adConstStr, adListener)
@@ -136,14 +146,16 @@ object TogetherAdFlow : AdBase() {
                     return
                 }
                 cancelTimerTask()
-
+                activity.runOnUiThread {
+                    adListener.onAdFailedSingle(AdNameType.GDT.type, "${adError?.errorCode}_${adError?.errorMsg}")
+                }
                 loge("${AdNameType.GDT.type}: ${adError?.errorCode}, ${adError?.errorMsg}")
                 val newListConfig = listConfigStr?.replace(AdNameType.GDT.type, AdNameType.NO.type)
                 getAdList(activity, newListConfig, adConstStr, adListener)
             }
         }
 
-        val mAdManager = NativeUnifiedAD(activity, TogetherAd.appIdGDT, TogetherAd.idMapGDT[adConstStr], listener)
+        val mAdManager = NativeUnifiedAD(activity, TogetherAd.idMapGDT[adConstStr], listener)
         //有效值就是 5-60
         mAdManager.setMaxVideoDuration(60)
         mAdManager.setMinVideoDuration(5)
@@ -155,6 +167,8 @@ object TogetherAdFlow : AdBase() {
     interface AdListenerList {
 
         fun onAdFailed(failedMsg: String?)
+
+        fun onAdFailedSingle(channel: String, failedMsg: String?)
 
         fun onAdLoaded(channel: String, adList: List<*>)
 

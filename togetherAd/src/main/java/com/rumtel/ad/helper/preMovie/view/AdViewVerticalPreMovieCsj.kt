@@ -43,7 +43,13 @@ class AdViewVerticalPreMovieCsj : AdViewVerticalPreMovieBase {
         activity = context
     }
 
-    override fun start(locationId: String) {
+    override fun start(locationId: String?) {
+        if (locationId?.isEmpty() != false) {
+            if (adViewListener != null) {
+                adViewListener.onAdFailed("ID是空的")
+            }
+            return
+        }
         try {
             val dm = DisplayMetrics()
             activity?.windowManager?.defaultDisplay?.getMetrics(dm)

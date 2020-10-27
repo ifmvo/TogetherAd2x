@@ -64,6 +64,10 @@ class DetailActivity : AppCompatActivity() {
                 Log.e("ifmvo", "onAdFailed:failedMsg:$failedMsg")
             }
 
+            override fun onAdFailedSingle(channel: String, failedMsg: String?) {
+                Log.e("ifmvo", "onAdFailedSingle:channel:$channel failedMsg:$failedMsg")
+            }
+
             override fun onAdDismissed() {
                 Log.e("ifmvo", "onAdDismissed")
             }
@@ -87,6 +91,10 @@ class DetailActivity : AppCompatActivity() {
 
             override fun onAdFailed(failedMsg: String?) {
                 Log.e("ifmvo", "onAdFailed:failedMsg:$failedMsg")
+            }
+
+            override fun onAdFailedSingle(channel: String, failedMsg: String?) {
+                Log.e("ifmvo", "onAdFailedSingle:channel:$channel failedMsg:$failedMsg")
             }
 
             override fun onAdDismissed() {
@@ -118,6 +126,10 @@ class DetailActivity : AppCompatActivity() {
                 Log.e("ifmvo", "onAdFailed:failedMsg:$failedMsg")
             }
 
+            override fun onAdFailedSingle(channel: String, failedMsg: String?) {
+                Log.e("ifmvo", "onAdFailedSingle:channel:$channel failedMsg:$failedMsg")
+            }
+
             override fun onAdDismissed() {
                 Log.e("ifmvo", "onAdDismissed")
             }
@@ -142,6 +154,10 @@ class DetailActivity : AppCompatActivity() {
                 Log.e("ifmvo", "onAdFailed:failedMsg:$failedMsg")
             }
 
+            override fun onAdFailedSingle(channel: String, failedMsg: String?) {
+                Log.e("ifmvo", "onAdFailedSingle:channel:$channel failedMsg:$failedMsg")
+            }
+
             override fun onAdDismissed() {
                 Log.e("ifmvo", "onAdDismissed")
             }
@@ -164,6 +180,10 @@ class DetailActivity : AppCompatActivity() {
 
             override fun onAdFailed(failedMsg: String?) {
                 Log.d("ifmvo", "TogetherAdMid.onAdFailed")
+            }
+
+            override fun onAdFailedSingle(channel: String, failedMsg: String?) {
+                Log.e("ifmvo", "onAdFailedSingle:channel:$channel failedMsg:$failedMsg")
             }
 
             override fun onAdDismissed() {
