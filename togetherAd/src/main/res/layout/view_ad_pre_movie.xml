@@ -21,6 +21,7 @@
         android:id="@+id/media_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/black"
         android:visibility="gone" />
 
     <!--
@@ -30,6 +31,7 @@
         android:id="@+id/ll_ad_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/black"
         android:visibility="gone">
 
         <ImageView

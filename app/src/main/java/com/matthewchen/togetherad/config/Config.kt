@@ -13,6 +13,8 @@ object Config {
 
     fun preMoiveAdConfig() = "gdt:1,csj:0"
 
+    fun preVerticalMoiveAdConfig() = "gdt:1,csj:0"
+
     fun listAdConfig() = "gdt:1,csj:0"
 
     fun webViewAdConfig() = "gdt:1,csj:0"

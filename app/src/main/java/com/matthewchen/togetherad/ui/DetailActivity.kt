@@ -55,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun fullVerticalVideo(needTimer: Boolean) {
-        TogetherAdVerticalPreMovie.showAdVerticalPreMovie(this, Config.preMoiveAdConfig(), TogetherAdConst.AD_TIEPIAN_LIVE, ll_ad_vertical, object : TogetherAdVerticalPreMovie.AdListenerVerticalPreMovie {
+        TogetherAdVerticalPreMovie.showAdVerticalPreMovie(this, Config.preVerticalMoiveAdConfig(), TogetherAdConst.AD_VERTICAL_VIDEO, ll_ad_vertical, object : TogetherAdVerticalPreMovie.AdListenerVerticalPreMovie {
             override fun onAdClick(channel: String) {
                 Log.e("ifmvo", "onAdClick:channel:$channel")
             }
@@ -79,7 +79,7 @@ class DetailActivity : AppCompatActivity() {
             override fun onStartRequest(channel: String) {
                 Log.e("ifmvo", "onStartRequest:channel:$channel")
             }
-        }, needTimer = needTimer, present = AdPresentType.InterstitialFull.present)
+        }, needTimer = needTimer, present = AdPresentType.NativeVideo.present)
     }
 
     private fun preMovieAd(needTimer: Boolean) {
