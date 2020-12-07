@@ -127,7 +127,7 @@ object TogetherAdSplash : AdBase() {
             }
 
             override fun onADLoaded(p0: Long) {}
-        }, 0)
+        }, 5000)
 
         splash.fetchAndShowIn(adsParentLayout)
     }
@@ -227,7 +227,7 @@ object TogetherAdSplash : AdBase() {
                     val newSplashConfigStr = splashConfigStr?.replace(AdNameType.CSJ.type, AdNameType.NO.type)
                     showAdFull(activity, newSplashConfigStr, adConstStr, adsParentLayout, skipView, timeView, adListener)
                 }
-            }, 2500)//超时时间，demo 为 2000
+            }, 5000)//超时时间，demo 为 3500
         } catch (e: Exception) {
             if (stop) {
                 return

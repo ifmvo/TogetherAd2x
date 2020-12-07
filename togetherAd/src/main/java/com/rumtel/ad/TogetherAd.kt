@@ -17,9 +17,8 @@ import com.rumtel.ad.other.logd
 object TogetherAd {
 
     var idMapGDT = mutableMapOf<String, String>()
-        private set
+
     var idMapCsj = mutableMapOf<String, String>()
-        private set
 
     /**
      * 保存application
@@ -30,13 +29,11 @@ object TogetherAd {
      * 广点通的 AppId
      */
     var appIdGDT = ""
-        private set
 
     /**
      * 超时时间
      */
     var timeOutMillis: Long = 5000
-        private set
 
     /**
      * 前贴
@@ -45,18 +42,16 @@ object TogetherAd {
         private set
 
     //广点通
-    fun initGDTAd(@NonNull context: Application, @NonNull gdtAdAppId: String, @NonNull gdtIdMap: MutableMap<String, String>) {
+    fun initGDTAd(@NonNull context: Application, @NonNull gdtAdAppId: String) {
         mContext = context
-        idMapGDT = gdtIdMap
         appIdGDT = gdtAdAppId
         GDTADManager.getInstance().initWith(context, gdtAdAppId)
         logd("初始化${AdNameType.GDT.type}")
     }
 
     //穿山甲
-    fun initCsjAd(@NonNull context: Application, @NonNull csjAdAppId: String, @NonNull appName: String, @NonNull csjIdMap: MutableMap<String, String>, useTextureView: Boolean = false) {
+    fun initCsjAd(@NonNull context: Application, @NonNull csjAdAppId: String, @NonNull appName: String, useTextureView: Boolean = false) {
         mContext = context
-        idMapCsj = csjIdMap
         //强烈建议在应用对应的Application#onCreate()方法中调用，避免出现content为null的异常
         TTAdSdk.init(context, TTAdConfig.Builder()
                 .appId(csjAdAppId)

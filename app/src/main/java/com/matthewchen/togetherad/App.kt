@@ -24,7 +24,7 @@ class App : Application() {
         gdtIdMap[TogetherAdConst.AD_BACK] = "9001919475210551"
         gdtIdMap[TogetherAdConst.AD_MID] = "1021415465902958"
         gdtIdMap[TogetherAdConst.AD_VERTICAL_VIDEO] = "3051315501066888"
-        TogetherAd.initGDTAd(this, "1105965856", gdtIdMap)
+        TogetherAd.initGDTAd(this, "1105965856")
 
         val csjIdMap = HashMap<String, String>()
         csjIdMap[TogetherAdConst.AD_SPLASH] = "820413685"
@@ -35,7 +35,11 @@ class App : Application() {
         csjIdMap[TogetherAdConst.AD_BACK] = "920413512"
         csjIdMap[TogetherAdConst.AD_MID] = "945513352"
         csjIdMap[TogetherAdConst.AD_VERTICAL_VIDEO] = "945223808"
-        TogetherAd.initCsjAd(this, "5020413", this.getString(R.string.app_name), csjIdMap, useTextureView = true)
-        TogetherAd.setAdTimeOutMillis(5000)
+        TogetherAd.initCsjAd(this, "5020413", this.getString(R.string.app_name), useTextureView = true)
+
+        TogetherAd.idMapGDT = gdtIdMap
+        TogetherAd.idMapCsj = csjIdMap
+
+        TogetherAd.setAdTimeOutMillis(7000)
     }
 }
