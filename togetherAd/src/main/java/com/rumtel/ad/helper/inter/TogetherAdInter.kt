@@ -105,7 +105,10 @@ object TogetherAdInter : AdBase() {
                     adItem = null
                 }
 
-                ILFactory.getLoader().load(activity, ivImage, adItem?.imgUrl, LoaderOptions())
+                try {
+                    ILFactory.getLoader().load(activity, ivImage, adItem?.imgUrl, LoaderOptions())
+                } catch (e: java.lang.Exception) {
+                }
                 logd("${AdNameType.GDT.type}: 原生类型： ${adItem?.adPatternType}")
                 when (adItem?.adPatternType) {
                     AdPatternType.NATIVE_2IMAGE_2TEXT, AdPatternType.NATIVE_3IMAGE -> {
@@ -334,13 +337,17 @@ object TogetherAdInter : AdBase() {
 
                 val ttImage = imageList[0]
 
-                ILFactory.getLoader().load(activity, imageView, ttImage.imageUrl, LoaderOptions(), object : LoadListener() {
-                    override fun onLoadCompleted(p0: Drawable?): Boolean {
-                        relativeLayout.addView(ivClose)
-                        relativeLayout.addView(logoView)
-                        return true
-                    }
-                })
+                try {
+                    ILFactory.getLoader().load(activity, imageView, ttImage.imageUrl, LoaderOptions(), object : LoadListener() {
+                        override fun onLoadCompleted(p0: Drawable?): Boolean {
+                            relativeLayout.addView(ivClose)
+                            relativeLayout.addView(logoView)
+                            return true
+                        }
+                    })
+                } catch (e: java.lang.Exception) {
+                }
+
 
                 adIntersContainer.visibility = View.VISIBLE
                 if (adIntersContainer.childCount > 0) {
